@@ -1,11 +1,24 @@
+import type { Stream } from "stream";
 import ApiError from "./ApiError";
 
-export interface Query {
-  [key: string]: undefined | string | number | boolean;
+export type Iterial = undefined | string | number | boolean;
+export interface IRequestQuery {
+  [key: string]: Iterial | Iterial[] | IRequestQuery;
 }
 
-export interface Header {
-  [key: string]: undefined | string | number | boolean | string[];
+export type IRequestBody =
+  | Iterial
+  | IRequestQuery
+  | FormData
+  | File
+  | Blob
+  | ArrayBuffer
+  | URLSearchParams
+  | Stream
+  | Buffer;
+
+export interface IRequestHeader {
+  [key: string]: Iterial | string[];
 }
 
 export interface ApiClient {
@@ -17,7 +30,7 @@ export interface RequestCore {
 }
 
 export interface HttpResponse<T> {
-  headers: Header;
+  headers: IRequestHeader;
   statusCode: number;
   errMsg: string;
   data: T;
@@ -25,11 +38,10 @@ export interface HttpResponse<T> {
 
 export interface HttpRequestConfig {
   api?: string;
-  query?: Query; // url query
-  field?: Query; // post form fields
-  data?: any; // body maybe array
+  query?: IRequestQuery; // url query
+  body?: IRequestBody; // body array
   method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
-  headers?: Header; // default get
+  headers?: IRequestHeader; // default get
   url?: string; // fullurl: default url == baseUrl+api
   clientConfig?: Record<string, any>; // only exist in client,custome config
 }
@@ -40,7 +52,7 @@ export interface ClientConfig {
   baseUrl?: string;
   requestCore: RequestCore;
   interceptors?: Interceptor<any>[];
-  errorHandler?: (err: any) => boolean;
+  errorHandler?: (err: any) => void;
 }
 
 export type ChainedInterceptor<T> = (
@@ -59,17 +71,17 @@ class Request<T> {
     this.interceptors = interceptors;
   }
 
-  private next(index: number, req: HttpRequestConfig): Promise<T> {
-    const intercept = this.interceptors[index];
+  private next(nextIndex: number, req: HttpRequestConfig): Promise<T> {
+    const intercept = this.interceptors[nextIndex];
     return intercept(
       req,
-      (index >= this.interceptors.length
+      (nextIndex >= this.interceptors.length
         ? null
-        : this.next.bind(this, index + 1)) as ChainedInterceptor<T>
+        : this.next.bind(this, nextIndex + 1)) as ChainedInterceptor<T>
     );
   }
 
-  async execute(request: HttpRequestConfig): Promise<T> {
+  async launch(request: HttpRequestConfig): Promise<T> {
     return this.interceptors[0](request, this.next.bind(this, 1));
   }
 }
@@ -90,7 +102,6 @@ const DEFAULT_INTERCEPTORS = [
 function httpRequestIntercept(requestCore: RequestCore) {
   return async function (request: HttpRequestConfig) {
     const config = { ...request };
-    delete config.clientConfig;
     return await requestCore.doRequest(config);
   };
 }
@@ -115,7 +126,7 @@ export class ApiClientImpl implements ApiClient {
           request.url = request.api;
         }
       }
-      return (await new Request(this.interceptors).execute(request)) as T;
+      return (await new Request(this.interceptors).launch(request)) as T;
     } catch (e: any) {
       this.config.errorHandler?.(e);
       if (e instanceof ApiError) {
