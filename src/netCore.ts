@@ -26,13 +26,20 @@ export default class DefaultRequestCoreImpl implements RequestCore {
   }
 
   doRequest<T>(request: HttpRequestConfig): Promise<HttpResponse<T>> {
-    const { url = "", method = "GET", query, data, headers = {} } = request;
+    const {
+      url = "",
+      method = "GET",
+      query,
+      field,
+      data,
+      headers = {},
+    } = request;
     return axios
       .request({
         withCredentials: false,
         method,
         url,
-        data,
+        data: field || data,
         params: query,
         headers,
       })

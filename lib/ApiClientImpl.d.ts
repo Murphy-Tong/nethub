@@ -19,6 +19,7 @@ export interface HttpResponse<T> {
 export interface HttpRequestConfig {
     api?: string;
     query?: Query;
+    field?: Query;
     data?: any;
     method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
     headers?: Header;

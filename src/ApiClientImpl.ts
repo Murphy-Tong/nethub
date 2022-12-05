@@ -26,7 +26,8 @@ export interface HttpResponse<T> {
 export interface HttpRequestConfig {
   api?: string;
   query?: Query; // url query
-  data?: any; // body
+  field?: Query; // post form fields
+  data?: any; // body maybe array
   method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
   headers?: Header; // default get
   url?: string; // fullurl: default url == baseUrl+api
@@ -45,6 +46,7 @@ export interface ClientConfig {
 export type ChainedInterceptor<T> = (
   param: HttpRequestConfig
 ) => Promise<InterceptorResult<T>>;
+
 export type Interceptor<T> = (
   param: HttpRequestConfig,
   next: ChainedInterceptor<T>
