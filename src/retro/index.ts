@@ -128,6 +128,7 @@ export default class Retro {
   static getRetroInterpreter(target: object, ...path: string[]) {
     return getTree(DECORATOR_TREE.get(target) || EMPTY_TREE, ...path);
   }
+  
   setClient(client: ApiClient) {
     this.client = client;
     return this;
