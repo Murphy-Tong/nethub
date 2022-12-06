@@ -65,7 +65,7 @@ export function Service<T>(constructor: IService<T>) {
             if (!config.api) {
               throw new Error(`Retro: 方法 ${p.toString()} path 未定义`);
             }
-            return retro.client!.execute(config);
+            return retro.getClient()!.execute(config);
           };
         },
       });
@@ -110,7 +110,7 @@ function getTree(
 }
 
 export default class Retro {
-  client: ApiClient | undefined;
+  private client: ApiClient | undefined;
 
   static addRetroInterpreter(
     interpreter: RetroInterpreter,
@@ -130,6 +130,11 @@ export default class Retro {
   }
   setClient(client: ApiClient) {
     this.client = client;
+    return this;
+  }
+
+  getClient() {
+    return this.client;
   }
 
   instance<T>(cls: IService<T>): T {
