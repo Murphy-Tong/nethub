@@ -1,0 +1,53 @@
+import { HttpRequestConfig } from "../ApiClientImpl";
+import { IDecoratorWithValue, RetroInterpreter } from "./define/decorator";
+import RetroMethodDecorator from "./define/method";
+
+export class GetDecorator extends RetroMethodDecorator<
+  string | { path: string; method: string }
+> {
+  method = "GET";
+  name = "GetDecorator";
+
+  constructor(method = "GET") {
+    super();
+    this.method = method;
+  }
+
+  collectMethodWithValue(
+    target: Object,
+    propertyKey: string,
+    value: string | { path: string; method: string }
+  ): RetroInterpreter {
+    const that = this;
+    return function (currentRequestConfig: HttpRequestConfig) {
+      if (typeof value === "string") {
+        currentRequestConfig.api = value;
+        currentRequestConfig.method = that.method;
+      } else {
+        currentRequestConfig.api = value.path;
+        currentRequestConfig.method = value.method;
+      }
+      return currentRequestConfig;
+    };
+  }
+}
+
+export const GET: IDecoratorWithValue<MethodDecorator, string> =
+  new GetDecorator("GET").regist();
+
+export const POST: IDecoratorWithValue<MethodDecorator, string> =
+  new GetDecorator("POST").regist();
+
+export const PUT: IDecoratorWithValue<MethodDecorator, string> =
+  new GetDecorator("PUT").regist();
+
+export const DELETE: IDecoratorWithValue<MethodDecorator, string> =
+  new GetDecorator("DELETE").regist();
+
+export const HEAD: IDecoratorWithValue<MethodDecorator, string> =
+  new GetDecorator("HEAD").regist();
+
+export const METHOD: IDecoratorWithValue<
+  MethodDecorator,
+  string | { path: string; method: string }
+> = new GetDecorator("HEAD").regist();
