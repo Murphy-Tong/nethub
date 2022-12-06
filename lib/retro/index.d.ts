@@ -12,9 +12,10 @@ export interface IService<T> {
 }
 export declare function Service<T>(constructor: IService<T>): IService<T>;
 export default class Retro {
-    client: ApiClient | undefined;
+    private client;
     static addRetroInterpreter(interpreter: RetroInterpreter, target: object, ...path: string[]): void;
     static getRetroInterpreter(target: object, ...path: string[]): RetroInterpreter[] | undefined;
-    setClient(client: ApiClient): void;
+    setClient(client: ApiClient): this;
+    getClient(): ApiClient | undefined;
     instance<T>(cls: IService<T>): T;
 }
