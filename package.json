@@ -10,6 +10,9 @@
     "lib",
     "src"
   ],
+  "repository": {
+    "url": "https://github.com/Murphy-Tong/nethub"
+  },
   "dependencies": {
     "reflect-metadata": "^0.1.13"
   },
