@@ -41,7 +41,7 @@ export function Service<T>(constructor: IService<T>) {
             };
 
             resolve(
-              "NetHub: class 缺少注解 @Service",
+              undefined,
               NetHub.getNetHubInterpreter(constructor.prototype)
             );
             resolve(
