@@ -141,7 +141,7 @@ export default class NetHub {
     return this.client;
   }
 
-  instance<T>(cls: IService<T>): T {
+  create<T>(cls: IService<T>): T {
     return new cls(this);
   }
 }
