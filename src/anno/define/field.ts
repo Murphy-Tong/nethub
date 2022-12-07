@@ -1,13 +1,13 @@
-import Retro from "..";
-import RetroDecorator, { IDecoratorWithValue } from "./decorator";
+import NetHub from "..";
+import NetHubDecorator, { IDecoratorWithValue } from "./decorator";
 
-export default class RetroFieldDecorator<V = any> extends RetroDecorator {
+export default class NetHubFieldDecorator<V = any> extends NetHubDecorator {
   regist(): IDecoratorWithValue<ParameterDecorator, V> & ParameterDecorator {
     const that = this;
     return <IDecoratorWithValue<ParameterDecorator, V> & ParameterDecorator>(
       function (value?: any) {
         if (arguments.length === 3) {
-          Retro.addRetroInterpreter(
+          NetHub.addNetHubInterpreter(
             // @ts-ignore
             that.collectField.apply(that, arguments),
             // @ts-ignore
@@ -20,7 +20,7 @@ export default class RetroFieldDecorator<V = any> extends RetroDecorator {
           propertyKey: string,
           parameterIndex: number
         ) => {
-          Retro.addRetroInterpreter(
+          NetHub.addNetHubInterpreter(
             that.collectFieldWithValue(
               target,
               propertyKey,

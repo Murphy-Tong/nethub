@@ -2,7 +2,7 @@ import { HttpRequestConfig } from "../../ApiClientImpl";
 
 export type IDecoratorWithValue<D, V = string> = (value: V) => D;
 
-export interface RetroInterpreter {
+export interface NetHubInterpreter {
   (
     currentRequestConfig: HttpRequestConfig,
     targetServiceConstructor: object,
@@ -12,39 +12,39 @@ export interface RetroInterpreter {
   ): HttpRequestConfig;
 }
 
-export function NOOPRetroInterpreter(currentRequestConfig: HttpRequestConfig) {
+export function NOOPNetHubInterpreter(currentRequestConfig: HttpRequestConfig) {
   return currentRequestConfig;
 }
 
-export default class RetroDecorator<V = any> {
-  name = "RetroDecorator";
+export default class NetHubDecorator<V = any> {
+  name = "NetHubDecorator";
 
-  collectService(cls: object): RetroInterpreter {
-    return NOOPRetroInterpreter;
+  collectService(cls: object): NetHubInterpreter {
+    return NOOPNetHubInterpreter;
   }
 
-  collectServiceWithValue(cls: object, value: V): RetroInterpreter {
-    return NOOPRetroInterpreter;
+  collectServiceWithValue(cls: object, value: V): NetHubInterpreter {
+    return NOOPNetHubInterpreter;
   }
 
-  collectMethod(target: Object, propertyKey: string): RetroInterpreter {
-    return NOOPRetroInterpreter;
+  collectMethod(target: Object, propertyKey: string): NetHubInterpreter {
+    return NOOPNetHubInterpreter;
   }
 
   collectMethodWithValue(
     target: Object,
     propertyKey: string,
     value: V
-  ): RetroInterpreter {
-    return NOOPRetroInterpreter;
+  ): NetHubInterpreter {
+    return NOOPNetHubInterpreter;
   }
 
   collectField(
     target: Object,
     propertyKey: string,
     parameterIndex: number
-  ): RetroInterpreter {
-    return NOOPRetroInterpreter;
+  ): NetHubInterpreter {
+    return NOOPNetHubInterpreter;
   }
 
   collectFieldWithValue(
@@ -52,7 +52,7 @@ export default class RetroDecorator<V = any> {
     propertyKey: string,
     parameterIndex: number,
     value: V
-  ): RetroInterpreter {
-    return NOOPRetroInterpreter;
+  ): NetHubInterpreter {
+    return NOOPNetHubInterpreter;
   }
 }

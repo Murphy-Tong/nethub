@@ -1,8 +1,8 @@
 import { HttpRequestConfig } from "../ApiClientImpl";
-import { IDecoratorWithValue, RetroInterpreter } from "./define/decorator";
-import RetroMethodDecorator from "./define/method";
+import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
+import NetHubMethodDecorator from "./define/method";
 
-export class GetDecorator extends RetroMethodDecorator<
+export class GetDecorator extends NetHubMethodDecorator<
   string | { path: string; method: string }
 > {
   method = "GET";
@@ -17,7 +17,7 @@ export class GetDecorator extends RetroMethodDecorator<
     target: Object,
     propertyKey: string,
     value: string | { path: string; method: string }
-  ): RetroInterpreter {
+  ): NetHubInterpreter {
     const that = this;
     return function (currentRequestConfig: HttpRequestConfig) {
       if (typeof value === "string") {

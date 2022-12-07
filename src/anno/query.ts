@@ -1,8 +1,8 @@
 import { HttpRequestConfig } from "../ApiClientImpl";
-import { IDecoratorWithValue, RetroInterpreter } from "./define/decorator";
-import RetroFieldDecorator from "./define/field";
+import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
+import NetHubFieldDecorator from "./define/field";
 
-export class QueryDecorator extends RetroFieldDecorator<string> {
+export class QueryDecorator extends NetHubFieldDecorator<string> {
   name = "QueryDecorator";
 
   collectFieldWithValue(
@@ -10,9 +10,9 @@ export class QueryDecorator extends RetroFieldDecorator<string> {
     propertyKey: string,
     parameterIndex: number,
     value: string
-  ): RetroInterpreter {
+  ): NetHubInterpreter {
     if (value === undefined || value === null) {
-      throw new Error("Retro: @Query value is null");
+      throw new Error("NetHub: @Query value is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
@@ -27,14 +27,14 @@ export class QueryDecorator extends RetroFieldDecorator<string> {
   }
 }
 
-export class QueryMapDecorator extends RetroFieldDecorator<void> {
+export class QueryMapDecorator extends NetHubFieldDecorator<void> {
   name = "QueryMapDecorator";
 
   collectField(
     target: Object,
     propertyKey: string,
     parameterIndex: number
-  ): RetroInterpreter {
+  ): NetHubInterpreter {
     return function (
       currentRequestConfig: HttpRequestConfig,
       targetServiceConstructor: object,
@@ -42,7 +42,7 @@ export class QueryMapDecorator extends RetroFieldDecorator<void> {
       argumentValue?: any
     ) {
       if (argumentValue && typeof argumentValue !== "object") {
-        throw new Error("Retro: @QueryMap 应该用于对象");
+        throw new Error("NetHub: @QueryMap 应该用于对象");
       }
       currentRequestConfig.query = Object.assign(
         currentRequestConfig.query || {},

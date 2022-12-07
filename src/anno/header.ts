@@ -1,11 +1,11 @@
-import Retro from ".";
+import NetHub from ".";
 import { HttpRequestConfig } from "../ApiClientImpl";
-import RetroDecorator, {
+import NetHubDecorator, {
   IDecoratorWithValue,
-  RetroInterpreter,
+  NetHubInterpreter,
 } from "./define/decorator";
 
-export class HeaderDecorator extends RetroDecorator<[string, string] | string> {
+export class HeaderDecorator extends NetHubDecorator<[string, string] | string> {
   name = "HeaderDecorator";
 
   collectFieldWithValue(
@@ -13,9 +13,9 @@ export class HeaderDecorator extends RetroDecorator<[string, string] | string> {
     propertyKey: string,
     parameterIndex: number,
     value: string
-  ): RetroInterpreter {
+  ): NetHubInterpreter {
     if (value === undefined || value === null) {
-      throw new Error("Retro: @Header value is null");
+      throw new Error("NetHub: @Header value is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
@@ -45,9 +45,9 @@ export class HeaderDecorator extends RetroDecorator<[string, string] | string> {
     target: Object,
     propertyKey: string,
     value: [string, string]
-  ): RetroInterpreter {
+  ): NetHubInterpreter {
     if (value === undefined || value === null) {
-      throw new Error("Retro: @Header value is null");
+      throw new Error("NetHub: @Header value is null");
     }
     return function (currentRequestConfig: HttpRequestConfig) {
       currentRequestConfig.headers = currentRequestConfig.headers || {};
@@ -74,7 +74,7 @@ export class HeaderDecorator extends RetroDecorator<[string, string] | string> {
     const that = this;
     return function (value?: any) {
       if (arguments.length === 2) {
-        Retro.addRetroInterpreter(
+        NetHub.addNetHubInterpreter(
           // @ts-ignore
           that.collectMethod.apply(that, arguments),
           // @ts-ignore
@@ -88,7 +88,7 @@ export class HeaderDecorator extends RetroDecorator<[string, string] | string> {
         parameterIndex: number | PropertyDescriptor
       ) {
         if (typeof parameterIndex === "number") {
-          return Retro.addRetroInterpreter(
+          return NetHub.addNetHubInterpreter(
             that.collectFieldWithValue(
               target,
               propertyKey,
@@ -100,7 +100,7 @@ export class HeaderDecorator extends RetroDecorator<[string, string] | string> {
             String(parameterIndex)
           );
         }
-        return Retro.addRetroInterpreter(
+        return NetHub.addNetHubInterpreter(
           that.collectMethodWithValue(target, propertyKey, value),
           target,
           propertyKey

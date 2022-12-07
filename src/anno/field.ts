@@ -1,8 +1,8 @@
 import { HttpRequestConfig } from "../ApiClientImpl";
-import { IDecoratorWithValue, RetroInterpreter } from "./define/decorator";
-import RetroFieldDecorator from "./define/field";
+import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
+import NetHubFieldDecorator from "./define/field";
 
-export class FieldDecorator extends RetroFieldDecorator<string> {
+export class FieldDecorator extends NetHubFieldDecorator<string> {
   name = "FieldDecorator";
 
   collectFieldWithValue(
@@ -10,9 +10,9 @@ export class FieldDecorator extends RetroFieldDecorator<string> {
     propertyKey: string,
     parameterIndex: number,
     value: string
-  ): RetroInterpreter {
+  ): NetHubInterpreter {
     if (value === undefined || value === null) {
-      throw new Error("Retro: @Filed value is null");
+      throw new Error("NetHub: @Filed value is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
@@ -24,7 +24,7 @@ export class FieldDecorator extends RetroFieldDecorator<string> {
       currentRequestConfig.body = currentRequestConfig.body || {};
       if (typeof currentRequestConfig.body !== "object") {
         throw new Error(
-          "Retro: @Field 当前body已经不是简单对象，无法添加更多参数"
+          "NetHub: @Field 当前body已经不是简单对象，无法添加更多参数"
         );
       }
       (currentRequestConfig.body as Record<string, any>)[value] = argumentValue;
@@ -33,14 +33,14 @@ export class FieldDecorator extends RetroFieldDecorator<string> {
   }
 }
 
-export class FieldMapMapDecorator extends RetroFieldDecorator<string> {
+export class FieldMapMapDecorator extends NetHubFieldDecorator<string> {
   name = "FieldMapMapDecorator";
 
   collectField(
     target: Object,
     propertyKey: string,
     parameterIndex: number
-  ): RetroInterpreter {
+  ): NetHubInterpreter {
     return function (
       currentRequestConfig: HttpRequestConfig,
       targetServiceConstructor: object,
@@ -51,7 +51,7 @@ export class FieldMapMapDecorator extends RetroFieldDecorator<string> {
       currentRequestConfig.body = currentRequestConfig.body || {};
       if (typeof currentRequestConfig.body !== "object") {
         throw new Error(
-          "Retro: @FieldMap 当前body已经不是简单对象，无法添加更多参数"
+          "NetHub: @FieldMap 当前body已经不是简单对象，无法添加更多参数"
         );
       }
       currentRequestConfig.body = Object.assign(

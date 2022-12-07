@@ -1,12 +1,12 @@
-import Retro from "..";
-import RetroDecorator, { IDecoratorWithValue } from "./decorator";
+import NetHub from "..";
+import NetHubDecorator, { IDecoratorWithValue } from "./decorator";
 
-export default class RetroMethodDecorator<V = any> extends RetroDecorator<V> {
+export default class NetHubMethodDecorator<V = any> extends NetHubDecorator<V> {
   regist(): IDecoratorWithValue<MethodDecorator, V> & MethodDecorator {
     const that = this;
     return function (value?: any) {
       if (arguments.length === 2) {
-        Retro.addRetroInterpreter(
+        NetHub.addNetHubInterpreter(
           // @ts-ignore
           that.collectMethod.apply(that, arguments),
           // @ts-ignore
@@ -15,7 +15,7 @@ export default class RetroMethodDecorator<V = any> extends RetroDecorator<V> {
         return;
       }
       return function (target: Object, propertyKey: string) {
-        return Retro.addRetroInterpreter(
+        return NetHub.addNetHubInterpreter(
           that.collectMethodWithValue(target, propertyKey, value),
           target,
           propertyKey

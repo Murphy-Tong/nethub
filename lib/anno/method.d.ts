@@ -1,6 +1,6 @@
-import { IDecoratorWithValue, RetroInterpreter } from "./define/decorator";
-import RetroMethodDecorator from "./define/method";
-export declare class GetDecorator extends RetroMethodDecorator<string | {
+import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
+import NetHubMethodDecorator from "./define/method";
+export declare class GetDecorator extends NetHubMethodDecorator<string | {
     path: string;
     method: string;
 }> {
@@ -10,7 +10,7 @@ export declare class GetDecorator extends RetroMethodDecorator<string | {
     collectMethodWithValue(target: Object, propertyKey: string, value: string | {
         path: string;
         method: string;
-    }): RetroInterpreter;
+    }): NetHubInterpreter;
 }
 export declare const GET: IDecoratorWithValue<MethodDecorator, string>;
 export declare const POST: IDecoratorWithValue<MethodDecorator, string>;

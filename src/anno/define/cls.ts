@@ -1,11 +1,11 @@
-import Retro from "..";
-import RetroDecorator, { IDecoratorWithValue } from "./decorator";
+import NetHub from "..";
+import NetHubDecorator, { IDecoratorWithValue } from "./decorator";
 
-class RetroClassDecorator<V = any> extends RetroDecorator {
+class NetHubClassDecorator<V = any> extends NetHubDecorator {
   regist(): ClassDecorator {
     const that = this;
     return <ClassDecorator>function (target: { new (): any }) {
-      Retro.addRetroInterpreter(that.collectService(target), target.prototype);
+      NetHub.addNetHubInterpreter(that.collectService(target), target.prototype);
     };
   }
 
@@ -13,7 +13,7 @@ class RetroClassDecorator<V = any> extends RetroDecorator {
     const that = this;
     return <IDecoratorWithValue<ClassDecorator>>function (value?: V) {
       return (target: { new (): any }) => {
-        Retro.addRetroInterpreter(
+        NetHub.addNetHubInterpreter(
           that.collectServiceWithValue(target, value),
           target.prototype
         );

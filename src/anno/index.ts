@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { ApiClient, HttpRequestConfig } from "../ApiClientImpl";
-import { RetroInterpreter } from "./define/decorator";
+import { NetHubInterpreter } from "./define/decorator";
 export * from "./field";
 export * from "./header";
 export * from "./method";
@@ -9,12 +9,12 @@ export * from "./define";
 
 export interface IService<T> {
   new (): T;
-  new (retro: Retro): T;
+  new (NetHub: NetHub): T;
 }
 
 export function Service<T>(constructor: IService<T>) {
   return class {
-    constructor(retro: Retro) {
+    constructor(hub: NetHub) {
       return new Proxy(this, {
         get(target, p, receiver) {
           return function () {
@@ -22,10 +22,13 @@ export function Service<T>(constructor: IService<T>) {
             let config: HttpRequestConfig = {};
             const resolve = function (
               throwMsg?: string,
-              interpreters?: RetroInterpreter[],
+              interpreters?: NetHubInterpreter[],
               val?: any,
               index?: number
             ) {
+              if (throwMsg && !interpreters?.length) {
+                throw new Error(throwMsg);
+              }
               interpreters?.forEach((interpreter) => {
                 config = interpreter(
                   config,
@@ -38,18 +41,18 @@ export function Service<T>(constructor: IService<T>) {
             };
 
             resolve(
-              "class 缺少注解 @Service",
-              Retro.getRetroInterpreter(constructor.prototype)
+              "NetHub: class 缺少注解 @Service",
+              NetHub.getNetHubInterpreter(constructor.prototype)
             );
             resolve(
-              "方法 缺少注解 @Method/@GET/@POST...",
-              Retro.getRetroInterpreter(constructor.prototype, p.toString())
+              "NetHub: 方法 缺少注解 @Method/@GET/@POST...",
+              NetHub.getNetHubInterpreter(constructor.prototype, p.toString())
             );
             if (args.length) {
               args.forEach((val, index) => {
                 resolve(
                   undefined,
-                  Retro.getRetroInterpreter(
+                  NetHub.getNetHubInterpreter(
                     constructor.prototype,
                     p.toString(),
                     String(index)
@@ -60,12 +63,12 @@ export function Service<T>(constructor: IService<T>) {
               });
             }
             if (!config.method) {
-              throw new Error(`Retro: 方法 ${p.toString()} method 未定义`);
+              throw new Error(`NetHub: 方法 ${p.toString()} method 未定义`);
             }
             if (!config.api) {
-              throw new Error(`Retro: 方法 ${p.toString()} path 未定义`);
+              throw new Error(`NetHub: 方法 ${p.toString()} path 未定义`);
             }
-            return retro.getClient()!.execute(config);
+            return hub.getClient()!.execute(config);
           };
         },
       });
@@ -74,7 +77,7 @@ export function Service<T>(constructor: IService<T>) {
 }
 
 type TreeNode = {
-  decorators?: RetroInterpreter[];
+  decorators?: NetHubInterpreter[];
   subTree?: Record<string, TreeNode>;
 };
 
@@ -82,7 +85,7 @@ const EMPTY_TREE = {};
 const DECORATOR_TREE = new Map<object, TreeNode>();
 
 function addTree(
-  interpreter: RetroInterpreter,
+  interpreter: NetHubInterpreter,
   tree: TreeNode,
   ...path: string[]
 ) {
@@ -99,7 +102,7 @@ function addTree(
 function getTree(
   subTree: TreeNode,
   ...path: string[]
-): RetroInterpreter[] | undefined {
+): NetHubInterpreter[] | undefined {
   if (!subTree) {
     return;
   }
@@ -109,11 +112,11 @@ function getTree(
   return getTree(subTree.subTree?.[path[0]] || EMPTY_TREE, ...path.slice(1));
 }
 
-export default class Retro {
+export default class NetHub {
   private client: ApiClient | undefined;
 
-  static addRetroInterpreter(
-    interpreter: RetroInterpreter,
+  static addNetHubInterpreter(
+    interpreter: NetHubInterpreter,
     target: object,
     ...path: string[]
   ) {
@@ -125,10 +128,10 @@ export default class Retro {
     addTree(interpreter, tree, ...path);
   }
 
-  static getRetroInterpreter(target: object, ...path: string[]) {
+  static getNetHubInterpreter(target: object, ...path: string[]) {
     return getTree(DECORATOR_TREE.get(target) || EMPTY_TREE, ...path);
   }
-  
+
   setClient(client: ApiClient) {
     this.client = client;
     return this;
