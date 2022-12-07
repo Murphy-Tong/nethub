@@ -17,5 +17,5 @@ export default class NetHub {
     static getNetHubInterpreter(target: object, ...path: string[]): NetHubInterpreter[] | undefined;
     setClient(client: ApiClient): this;
     getClient(): ApiClient | undefined;
-    instance<T>(cls: IService<T>): T;
+    create<T>(cls: IService<T>): T;
 }
