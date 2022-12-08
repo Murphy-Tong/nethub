@@ -6,19 +6,19 @@ export class QueryDecorator extends NetHubFieldDecorator<string> {
   name = "QueryDecorator";
 
   collectFieldWithValue(
+    value: string,
     target: Object,
     propertyKey: string,
-    parameterIndex: number,
-    value: string
+    parameterIndex: number
   ): NetHubInterpreter {
     if (value === undefined || value === null) {
       throw new Error("NetHub: @Query value is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
+      argumentValue: any,
       targetServiceConstructor: object,
-      methodName: string | Symbol,
-      argumentValue?: any
+      methodName: string | Symbol
     ) {
       currentRequestConfig.query = currentRequestConfig.query || {};
       currentRequestConfig.query[value] = argumentValue;
@@ -37,9 +37,9 @@ export class QueryMapDecorator extends NetHubFieldDecorator<void> {
   ): NetHubInterpreter {
     return function (
       currentRequestConfig: HttpRequestConfig,
+      argumentValue: any,
       targetServiceConstructor: object,
-      methodName: string | Symbol,
-      argumentValue?: any
+      methodName: string | Symbol
     ) {
       if (argumentValue && typeof argumentValue !== "object") {
         throw new Error("NetHub: @QueryMap 应该用于对象");

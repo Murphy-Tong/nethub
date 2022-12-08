@@ -5,7 +5,7 @@ export default class NetHubClassDecorator<V = any> extends NetHubDecorator {
   regist(): ClassDecorator {
     const that = this;
     return <ClassDecorator>function (target: { new (): any }) {
-      NetHub.addNetHubInterpreter(that.collectService(target), target.prototype);
+      NetHub.addNetHubInterpreter(that.collectClass(target), target.prototype);
     };
   }
 
@@ -14,7 +14,7 @@ export default class NetHubClassDecorator<V = any> extends NetHubDecorator {
     return <IDecoratorWithValue<ClassDecorator>>function (value?: V) {
       return (target: { new (): any }) => {
         NetHub.addNetHubInterpreter(
-          that.collectServiceWithValue(target, value),
+          that.collectClassWithValue(value, target),
           target.prototype
         );
       };

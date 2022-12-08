@@ -32,9 +32,9 @@ export function Service<T>(constructor: IService<T>) {
               interpreters?.forEach((interpreter) => {
                 config = interpreter(
                   config,
+                  val,
                   constructor.prototype,
                   p,
-                  val,
                   index
                 );
               });

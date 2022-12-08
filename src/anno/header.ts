@@ -5,23 +5,25 @@ import NetHubDecorator, {
   NetHubInterpreter,
 } from "./define/decorator";
 
-export class HeaderDecorator extends NetHubDecorator<[string, string] | string> {
+export class HeaderDecorator extends NetHubDecorator<
+  [string, string] | string
+> {
   name = "HeaderDecorator";
 
   collectFieldWithValue(
+    value: string,
     target: Object,
     propertyKey: string,
-    parameterIndex: number,
-    value: string
+    parameterIndex: number
   ): NetHubInterpreter {
     if (value === undefined || value === null) {
       throw new Error("NetHub: @Header value is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
+      argumentValue: any,
       targetServiceConstructor: object,
-      methodName: string | Symbol,
-      argumentValue: any
+      methodName: string | Symbol
     ) {
       currentRequestConfig.headers = currentRequestConfig.headers || {};
       if (currentRequestConfig.headers[value]) {
@@ -42,9 +44,9 @@ export class HeaderDecorator extends NetHubDecorator<[string, string] | string> 
     };
   }
   collectMethodWithValue(
+    value: [string, string],
     target: Object,
-    propertyKey: string,
-    value: [string, string]
+    propertyKey: string
   ): NetHubInterpreter {
     if (value === undefined || value === null) {
       throw new Error("NetHub: @Header value is null");
@@ -90,10 +92,10 @@ export class HeaderDecorator extends NetHubDecorator<[string, string] | string> 
         if (typeof parameterIndex === "number") {
           return NetHub.addNetHubInterpreter(
             that.collectFieldWithValue(
+              value,
               target,
               propertyKey,
-              parameterIndex,
-              value
+              parameterIndex
             ),
             target,
             propertyKey,
@@ -101,7 +103,7 @@ export class HeaderDecorator extends NetHubDecorator<[string, string] | string> 
           );
         }
         return NetHub.addNetHubInterpreter(
-          that.collectMethodWithValue(target, propertyKey, value),
+          that.collectMethodWithValue(value, target, propertyKey),
           target,
           propertyKey
         );

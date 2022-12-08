@@ -6,19 +6,19 @@ export class FieldDecorator extends NetHubFieldDecorator<string> {
   name = "FieldDecorator";
 
   collectFieldWithValue(
+    value: string,
     target: Object,
     propertyKey: string,
-    parameterIndex: number,
-    value: string
+    parameterIndex: number
   ): NetHubInterpreter {
     if (value === undefined || value === null) {
       throw new Error("NetHub: @Filed value is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
+      argumentValue: any,
       targetServiceConstructor: object,
       methodName: string | Symbol,
-      argumentValue?: any,
       argumentIndex?: number
     ) {
       currentRequestConfig.body = currentRequestConfig.body || {};
@@ -43,9 +43,9 @@ export class FieldMapMapDecorator extends NetHubFieldDecorator<string> {
   ): NetHubInterpreter {
     return function (
       currentRequestConfig: HttpRequestConfig,
+      argumentValue: any,
       targetServiceConstructor: object,
       methodName: string | Symbol,
-      argumentValue?: any,
       argumentIndex?: number
     ) {
       currentRequestConfig.body = currentRequestConfig.body || {};

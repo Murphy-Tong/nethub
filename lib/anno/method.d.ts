@@ -7,10 +7,10 @@ export declare class GetDecorator extends NetHubMethodDecorator<string | {
     method: string;
     name: string;
     constructor(method?: string);
-    collectMethodWithValue(target: Object, propertyKey: string, value: string | {
+    collectMethodWithValue(value: string | {
         path: string;
         method: string;
-    }): NetHubInterpreter;
+    }, target: Object, propertyKey: string): NetHubInterpreter;
 }
 export declare const GET: IDecoratorWithValue<MethodDecorator, string>;
 export declare const POST: IDecoratorWithValue<MethodDecorator, string>;

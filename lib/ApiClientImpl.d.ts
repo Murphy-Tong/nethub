@@ -27,7 +27,17 @@ export interface HttpRequestConfig {
     body?: IRequestBody;
     method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
     headers?: IRequestHeader;
+    /**
+     * baseUrl: url == baseUrl+api
+     */
+    baseUrl?: string;
+    /**
+     * fullurl: url == baseUrl+api
+     */
     url?: string;
+    /**
+     * only exist in client,custome config
+     */
     clientConfig?: Record<string, any>;
 }
 export declare type InterceptorResult<T> = T;

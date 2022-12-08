@@ -42,8 +42,18 @@ export interface HttpRequestConfig {
   body?: IRequestBody; // body array
   method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
   headers?: IRequestHeader; // default get
-  url?: string; // fullurl: default url == baseUrl+api
-  clientConfig?: Record<string, any>; // only exist in client,custome config
+  /**
+   * baseUrl: url == baseUrl+api
+   */
+  baseUrl?: string;
+  /**
+   * fullurl: url == baseUrl+api
+   */
+  url?: string;
+  /**
+   * only exist in client,custome config
+   */
+  clientConfig?: Record<string, any>;
 }
 
 export type InterceptorResult<T> = T;
@@ -120,7 +130,9 @@ export class ApiClientImpl implements ApiClient {
     let httpResponse: HttpResponse<any> | undefined;
     try {
       if (!request.url) {
-        if (this.config.baseUrl) {
+        if (request.baseUrl) {
+          request.url = request.baseUrl + request.api;
+        } else if (this.config.baseUrl) {
           request.url = this.config.baseUrl + request.api;
         } else {
           request.url = request.api;

@@ -5,9 +5,9 @@ export type IDecoratorWithValue<D, V = string> = (value: V) => D;
 export interface NetHubInterpreter {
   (
     currentRequestConfig: HttpRequestConfig,
+    argumentValue: any,
     targetServiceConstructor: object,
     methodName: string | Symbol,
-    argumentValue?: any,
     argumentIndex?: number
   ): HttpRequestConfig;
 }
@@ -19,11 +19,11 @@ export function NOOPNetHubInterpreter(currentRequestConfig: HttpRequestConfig) {
 export default class NetHubDecorator<V = any> {
   name = "NetHubDecorator";
 
-  collectService(cls: object): NetHubInterpreter {
+  collectClass(cls: object): NetHubInterpreter {
     return NOOPNetHubInterpreter;
   }
 
-  collectServiceWithValue(cls: object, value: V): NetHubInterpreter {
+  collectClassWithValue(value: V, cls: object): NetHubInterpreter {
     return NOOPNetHubInterpreter;
   }
 
@@ -32,9 +32,9 @@ export default class NetHubDecorator<V = any> {
   }
 
   collectMethodWithValue(
+    value: V,
     target: Object,
-    propertyKey: string,
-    value: V
+    propertyKey: string
   ): NetHubInterpreter {
     return NOOPNetHubInterpreter;
   }
@@ -48,10 +48,10 @@ export default class NetHubDecorator<V = any> {
   }
 
   collectFieldWithValue(
+    value: V,
     target: Object,
     propertyKey: string,
-    parameterIndex: number,
-    value: V
+    parameterIndex: number
   ): NetHubInterpreter {
     return NOOPNetHubInterpreter;
   }

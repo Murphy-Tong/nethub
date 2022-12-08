@@ -16,7 +16,7 @@ export default class NetHubMethodDecorator<V = any> extends NetHubDecorator<V> {
       }
       return function (target: Object, propertyKey: string) {
         return NetHub.addNetHubInterpreter(
-          that.collectMethodWithValue(target, propertyKey, value),
+          that.collectMethodWithValue(value, target, propertyKey),
           target,
           propertyKey
         );

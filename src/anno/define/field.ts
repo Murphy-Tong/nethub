@@ -22,10 +22,10 @@ export default class NetHubFieldDecorator<V = any> extends NetHubDecorator {
         ) => {
           NetHub.addNetHubInterpreter(
             that.collectFieldWithValue(
+              value,
               target,
               propertyKey,
-              parameterIndex,
-              value
+              parameterIndex
             ),
             target,
             propertyKey,
