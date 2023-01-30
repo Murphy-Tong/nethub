@@ -1,15 +1,10 @@
 import "reflect-metadata";
 import { ApiClient } from "../ApiClientImpl";
-export interface IService<T> {
-    new (): T;
-    new (NetHub: NetHub): T;
-}
-export declare function Service(host: string): <T>(constructor: IService<T>) => IService<T>;
-export declare function Service<T>(constructor: IService<T>): IService<T>;
+import { IService } from "../service";
 export default class NetHub {
     private client;
     setClient(client: ApiClient): this;
-    getClient(): ApiClient | undefined;
+    getClient(): ApiClient;
     create<T>(cls: IService<T>): T;
 }
 export * from "./define/cls";
