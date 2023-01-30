@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { ApiClient, HttpRequestConfig } from "../ApiClientImpl";
-import { NetHubInterpreter } from "./define/decorator";
+import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
 export * from "./field";
 export * from "./header";
 export * from "./method";
@@ -12,7 +12,7 @@ export interface IService<T> {
   new (NetHub: NetHub): T;
 }
 
-export function Service<T>(constructor: IService<T>) {
+function createServiceProxy<T>(constructor: IService<T>, host?: string) {
   return class {
     constructor(hub: NetHub) {
       return new Proxy(this, {
@@ -20,6 +20,11 @@ export function Service<T>(constructor: IService<T>) {
           return function () {
             const args = [...arguments];
             let config: HttpRequestConfig = {};
+
+            if (host) {
+              config.baseUrl = host;
+            }
+
             const resolve = function (
               throwMsg?: string,
               interpreters?: NetHubInterpreter[],
@@ -74,6 +79,23 @@ export function Service<T>(constructor: IService<T>) {
       });
     }
   } as IService<T>;
+}
+
+export function Service(
+  host: string
+): <T>(constructor: IService<T>) => IService<T>;
+
+export function Service<T>(constructor: IService<T>): IService<T>;
+
+export function Service<T>(
+  param: IService<T> | string
+): IService<T> | ((constructor: IService<T>) => IService<T>) {
+  if (typeof param === "string") {
+    return function (constructor: IService<T>) {
+      return createServiceProxy(constructor as IService<T>, param);
+    };
+  }
+  return createServiceProxy(param as IService<T>);
 }
 
 type TreeNode = {
