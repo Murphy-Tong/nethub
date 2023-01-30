@@ -1,4 +1,4 @@
-import NetHub from "..";
+import { addNetHubInterpreter } from "../interceptors";
 import NetHubDecorator, { IDecoratorWithValue } from "./decorator";
 
 export default class NetHubFieldDecorator<V = any> extends NetHubDecorator {
@@ -7,7 +7,7 @@ export default class NetHubFieldDecorator<V = any> extends NetHubDecorator {
     return <IDecoratorWithValue<ParameterDecorator, V> & ParameterDecorator>(
       function (value?: any) {
         if (arguments.length === 3) {
-          NetHub.addNetHubInterpreter(
+          addNetHubInterpreter(
             // @ts-ignore
             that.collectField.apply(that, arguments),
             // @ts-ignore
@@ -20,7 +20,7 @@ export default class NetHubFieldDecorator<V = any> extends NetHubDecorator {
           propertyKey: string,
           parameterIndex: number
         ) => {
-          NetHub.addNetHubInterpreter(
+          addNetHubInterpreter(
             that.collectFieldWithValue(
               value,
               target,

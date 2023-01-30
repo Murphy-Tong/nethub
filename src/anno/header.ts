@@ -1,9 +1,9 @@
-import NetHub from ".";
 import { HttpRequestConfig } from "../ApiClientImpl";
 import NetHubDecorator, {
   IDecoratorWithValue,
   NetHubInterpreter,
 } from "./define/decorator";
+import { addNetHubInterpreter } from "./interceptors";
 
 export class HeaderDecorator extends NetHubDecorator<
   [string, string] | string
@@ -76,7 +76,7 @@ export class HeaderDecorator extends NetHubDecorator<
     const that = this;
     return function (value?: any) {
       if (arguments.length === 2) {
-        NetHub.addNetHubInterpreter(
+        addNetHubInterpreter(
           // @ts-ignore
           that.collectMethod.apply(that, arguments),
           // @ts-ignore
@@ -90,7 +90,7 @@ export class HeaderDecorator extends NetHubDecorator<
         parameterIndex: number | PropertyDescriptor
       ) {
         if (typeof parameterIndex === "number") {
-          return NetHub.addNetHubInterpreter(
+          return addNetHubInterpreter(
             that.collectFieldWithValue(
               value,
               target,
@@ -102,7 +102,7 @@ export class HeaderDecorator extends NetHubDecorator<
             String(parameterIndex)
           );
         }
-        return NetHub.addNetHubInterpreter(
+        return addNetHubInterpreter(
           that.collectMethodWithValue(value, target, propertyKey),
           target,
           propertyKey

@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { ApiClient, HttpRequestConfig } from "../ApiClientImpl";
+import { getNetHubInterpreter } from "./interceptors";
 import { NetHubInterpreter } from "./define/decorator";
 
 export interface IService<T> {
@@ -51,13 +52,13 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
             // 类注解
             await resolve(
               undefined,
-              NetHub.getNetHubInterpreter(constructor.prototype)
+              getNetHubInterpreter(constructor.prototype)
             );
 
             // 方法注解
             resolve(
               "NetHub: 方法 缺少注解 @Method/@GET/@POST...",
-              NetHub.getNetHubInterpreter(constructor.prototype, p.toString())
+              getNetHubInterpreter(constructor.prototype, p.toString())
             );
 
             // 参数注解
@@ -66,7 +67,7 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
                 args.map((val, index) => {
                   return resolve(
                     undefined,
-                    NetHub.getNetHubInterpreter(
+                    getNetHubInterpreter(
                       constructor.prototype,
                       p.toString(),
                       String(index)
@@ -109,61 +110,8 @@ export function Service<T>(
   return createServiceProxy(param as IService<T>);
 }
 
-type TreeNode = {
-  decorators?: NetHubInterpreter[];
-  subTree?: Record<string, TreeNode>;
-};
-
-const EMPTY_TREE = {};
-const DECORATOR_TREE = new Map<object, TreeNode>();
-
-function addTree(
-  interpreter: NetHubInterpreter,
-  tree: TreeNode,
-  ...path: string[]
-) {
-  if (!path.length) {
-    tree.decorators = tree.decorators || [];
-    tree.decorators.push(interpreter);
-    return;
-  }
-  tree.subTree = tree.subTree || {};
-  tree.subTree[path[0]] = tree.subTree[path[0]] || {};
-  addTree(interpreter, tree.subTree[path[0]], ...path.slice(1));
-}
-
-function getTree(
-  subTree: TreeNode,
-  ...path: string[]
-): NetHubInterpreter[] | undefined {
-  if (!subTree) {
-    return;
-  }
-  if (!path?.length) {
-    return subTree.decorators;
-  }
-  return getTree(subTree.subTree?.[path[0]] || EMPTY_TREE, ...path.slice(1));
-}
-
 export default class NetHub {
   private client: ApiClient | undefined;
-
-  static addNetHubInterpreter(
-    interpreter: NetHubInterpreter,
-    target: object,
-    ...path: string[]
-  ) {
-    let tree = DECORATOR_TREE.get(target);
-    if (!tree) {
-      tree = {};
-      DECORATOR_TREE.set(target, tree);
-    }
-    addTree(interpreter, tree, ...path);
-  }
-
-  static getNetHubInterpreter(target: object, ...path: string[]) {
-    return getTree(DECORATOR_TREE.get(target) || EMPTY_TREE, ...path);
-  }
 
   setClient(client: ApiClient) {
     this.client = client;
@@ -187,3 +135,4 @@ export * from "./field";
 export * from "./header";
 export * from "./method";
 export * from "./query";
+

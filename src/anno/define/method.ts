@@ -1,4 +1,4 @@
-import NetHub from "..";
+import { addNetHubInterpreter } from "../interceptors";
 import NetHubDecorator, { IDecoratorWithValue } from "./decorator";
 
 export default class NetHubMethodDecorator<V = any> extends NetHubDecorator<V> {
@@ -6,7 +6,7 @@ export default class NetHubMethodDecorator<V = any> extends NetHubDecorator<V> {
     const that = this;
     return function (value?: any) {
       if (arguments.length === 2) {
-        NetHub.addNetHubInterpreter(
+        addNetHubInterpreter(
           // @ts-ignore
           that.collectMethod.apply(that, arguments),
           // @ts-ignore
@@ -15,7 +15,7 @@ export default class NetHubMethodDecorator<V = any> extends NetHubDecorator<V> {
         return;
       }
       return function (target: Object, propertyKey: string) {
-        return NetHub.addNetHubInterpreter(
+        return addNetHubInterpreter(
           that.collectMethodWithValue(value, target, propertyKey),
           target,
           propertyKey

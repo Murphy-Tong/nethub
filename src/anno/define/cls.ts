@@ -1,11 +1,11 @@
-import NetHub from "..";
+import { addNetHubInterpreter } from "../interceptors";
 import NetHubDecorator, { IDecoratorWithValue } from "./decorator";
 
 export default class NetHubClassDecorator<V = any> extends NetHubDecorator {
   regist(): ClassDecorator {
     const that = this;
     return <ClassDecorator>function (target: { new (): any }) {
-      NetHub.addNetHubInterpreter(that.collectClass(target), target.prototype);
+      addNetHubInterpreter(that.collectClass(target), target.prototype);
     };
   }
 
@@ -13,7 +13,7 @@ export default class NetHubClassDecorator<V = any> extends NetHubDecorator {
     const that = this;
     return <IDecoratorWithValue<ClassDecorator>>function (value?: V) {
       return (target: { new (): any }) => {
-        NetHub.addNetHubInterpreter(
+        addNetHubInterpreter(
           that.collectClassWithValue(value, target),
           target.prototype
         );

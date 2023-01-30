@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import { ApiClient } from "../ApiClientImpl";
-import { NetHubInterpreter } from "./define/decorator";
 export interface IService<T> {
     new (): T;
     new (NetHub: NetHub): T;
@@ -9,8 +8,6 @@ export declare function Service(host: string): <T>(constructor: IService<T>) => 
 export declare function Service<T>(constructor: IService<T>): IService<T>;
 export default class NetHub {
     private client;
-    static addNetHubInterpreter(interpreter: NetHubInterpreter, target: object, ...path: string[]): void;
-    static getNetHubInterpreter(target: object, ...path: string[]): NetHubInterpreter[] | undefined;
     setClient(client: ApiClient): this;
     getClient(): ApiClient | undefined;
     create<T>(cls: IService<T>): T;
