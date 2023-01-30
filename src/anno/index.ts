@@ -30,7 +30,8 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
                 throw new Error(throwMsg);
               }
 
-              for (let i = 0; i < interpreters!.length; i++) {
+              const l = interpreters?.length || 0;
+              for (let i = 0; i < l; i++) {
                 const interpreter = interpreters![i];
                 const res = interpreter(
                   config,
