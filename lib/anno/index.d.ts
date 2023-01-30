@@ -1,11 +1,6 @@
 import "reflect-metadata";
 import { ApiClient } from "../ApiClientImpl";
 import { NetHubInterpreter } from "./define/decorator";
-export * from "./define";
-export * from "./field";
-export * from "./header";
-export * from "./method";
-export * from "./query";
 export interface IService<T> {
     new (): T;
     new (NetHub: NetHub): T;
@@ -20,3 +15,11 @@ export default class NetHub {
     getClient(): ApiClient | undefined;
     create<T>(cls: IService<T>): T;
 }
+export * from "./define/cls";
+export * from "./define/decorator";
+export * from "./define/field";
+export * from "./define/method";
+export * from "./field";
+export * from "./header";
+export * from "./method";
+export * from "./query";
