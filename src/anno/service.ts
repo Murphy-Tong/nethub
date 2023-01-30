@@ -1,6 +1,6 @@
-import { NetHubInterpreter } from "./anno/define/decorator";
-import { getNetHubInterpreter } from "./anno/interceptors";
-import { ApiClient, HttpRequestConfig } from "./ApiClientImpl";
+import { NetHubInterpreter } from "./define/decorator";
+import { getNetHubInterpreter } from "./interceptors";
+import { ApiClient, HttpRequestConfig } from "../ApiClientImpl";
 
 type IClientProvider = {
   getClient(): ApiClient;
