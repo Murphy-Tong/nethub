@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import { ApiClient } from "../ApiClientImpl";
 import { NetHubInterpreter } from "./define/decorator";
+export * from "./define";
 export * from "./field";
 export * from "./header";
 export * from "./method";
 export * from "./query";
-export * from "./define";
 export interface IService<T> {
     new (): T;
     new (NetHub: NetHub): T;

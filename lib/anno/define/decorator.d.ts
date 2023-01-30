@@ -1,7 +1,7 @@
 import { HttpRequestConfig } from "../../ApiClientImpl";
 export declare type IDecoratorWithValue<D, V = string> = (value: V) => D;
 export interface NetHubInterpreter {
-    (currentRequestConfig: HttpRequestConfig, argumentValue: any, targetServiceConstructor: object, methodName: string | Symbol, argumentIndex?: number): HttpRequestConfig;
+    (currentRequestConfig: HttpRequestConfig, argumentValue: any, targetServiceConstructor: object, methodName: string | Symbol, argumentIndex?: number): HttpRequestConfig | Promise<HttpRequestConfig>;
 }
 export declare function NOOPNetHubInterpreter(currentRequestConfig: HttpRequestConfig): HttpRequestConfig;
 export default class NetHubDecorator<V = any> {

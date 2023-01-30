@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import { ApiClient, HttpRequestConfig } from "../ApiClientImpl";
-import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
+import { NetHubInterpreter } from "./define/decorator";
+export * from "./define";
 export * from "./field";
 export * from "./header";
 export * from "./method";
 export * from "./query";
-export * from "./define";
 
 export interface IService<T> {
   new (): T;
@@ -17,7 +17,7 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
     constructor(hub: NetHub) {
       return new Proxy(this, {
         get(target, p, receiver) {
-          return function () {
+          return async function () {
             const args = [...arguments];
             let config: HttpRequestConfig = {};
 
@@ -25,7 +25,7 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
               config.baseUrl = host;
             }
 
-            const resolve = function (
+            const resolve = async function (
               throwMsg?: string,
               interpreters?: NetHubInterpreter[],
               val?: any,
@@ -34,45 +34,60 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
               if (throwMsg && !interpreters?.length) {
                 throw new Error(throwMsg);
               }
-              interpreters?.forEach((interpreter) => {
-                config = interpreter(
+
+              for (let i = 0; i < interpreters!.length; i++) {
+                const interpreter = interpreters![i];
+                const res = interpreter(
                   config,
                   val,
                   constructor.prototype,
                   p,
                   index
                 );
-              });
+                if (res instanceof Promise) {
+                  config = await res;
+                } else {
+                  config = res;
+                }
+              }
             };
 
-            resolve(
+            // 类注解
+            await resolve(
               undefined,
               NetHub.getNetHubInterpreter(constructor.prototype)
             );
+
+            // 方法注解
             resolve(
               "NetHub: 方法 缺少注解 @Method/@GET/@POST...",
               NetHub.getNetHubInterpreter(constructor.prototype, p.toString())
             );
+
+            // 参数注解
             if (args.length) {
-              args.forEach((val, index) => {
-                resolve(
-                  undefined,
-                  NetHub.getNetHubInterpreter(
-                    constructor.prototype,
-                    p.toString(),
-                    String(index)
-                  ),
-                  val,
-                  index
-                );
-              });
+              await Promise.all(
+                args.map((val, index) => {
+                  return resolve(
+                    undefined,
+                    NetHub.getNetHubInterpreter(
+                      constructor.prototype,
+                      p.toString(),
+                      String(index)
+                    ),
+                    val,
+                    index
+                  );
+                })
+              );
             }
+
             if (!config.method) {
-              throw new Error(`NetHub: 方法 ${p.toString()} method 未定义`);
+              throw new Error(
+                `NetHub: 方法 ${p.toString()} request method 未定义`
+              );
             }
-            if (!config.api) {
-              throw new Error(`NetHub: 方法 ${p.toString()} path 未定义`);
-            }
+
             return hub.getClient()!.execute(config);
           };
         },

@@ -9,7 +9,7 @@ export interface NetHubInterpreter {
     targetServiceConstructor: object,
     methodName: string | Symbol,
     argumentIndex?: number
-  ): HttpRequestConfig;
+  ): HttpRequestConfig | Promise<HttpRequestConfig>;
 }
 
 export function NOOPNetHubInterpreter(currentRequestConfig: HttpRequestConfig) {
