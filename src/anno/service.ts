@@ -59,7 +59,7 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
             );
 
             // 方法注解
-            resolve(
+            await resolve(
               "NetHub: 方法 缺少注解 @Method/@GET/@POST...",
               getNetHubInterpreter(constructor.prototype, p.toString())
             );
