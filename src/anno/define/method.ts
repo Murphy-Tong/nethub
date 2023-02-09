@@ -6,7 +6,7 @@ export default class NetHubMethodDecorator<V = any> extends NetHubDecorator<V> {
     const that = this;
     return function (value?: any) {
       if (arguments.length === 3) {
-        const { target, propertyKey } = arguments as any;
+        const [target, propertyKey] = arguments as any;
         addNetHubInterpreter(
           that.collectMethod(target, propertyKey),
           target,
