@@ -5,7 +5,7 @@ export default class NetHubMethodDecorator<V = any> extends NetHubDecorator<V> {
   regist(): IDecoratorWithValue<MethodDecorator, V> & MethodDecorator {
     const that = this;
     return function (value?: any) {
-      if (arguments.length === 2) {
+      if (arguments.length === 3) {
         addNetHubInterpreter(
           // @ts-ignore
           that.collectMethod.apply(that, arguments),
