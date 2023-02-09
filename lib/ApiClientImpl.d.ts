@@ -22,17 +22,20 @@ export interface HttpResponse<T> {
     data: T;
 }
 export interface HttpRequestConfig {
-    api?: string;
     query?: IRequestQuery;
     body?: IRequestBody;
     method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
     headers?: IRequestHeader;
     /**
-     * baseUrl: url == baseUrl+api
+     * path of request url
      */
-    baseUrl?: string;
+    path?: string;
     /**
-     * fullurl: url == baseUrl+api
+     * host of request url
+     */
+    host?: string;
+    /**
+     * if this is set , host and path while be ignored , otherwise url = host+path
      */
     url?: string;
     /**
@@ -42,7 +45,7 @@ export interface HttpRequestConfig {
 }
 export declare type InterceptorResult<T> = T;
 export interface ClientConfig {
-    baseUrl?: string;
+    host?: string;
     requestCore: RequestCore;
     interceptors?: Interceptor<any>[];
     errorHandler?: (err: any) => void;

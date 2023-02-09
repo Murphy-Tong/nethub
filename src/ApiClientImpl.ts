@@ -37,17 +37,20 @@ export interface HttpResponse<T> {
 }
 
 export interface HttpRequestConfig {
-  api?: string;
   query?: IRequestQuery; // url query
   body?: IRequestBody; // body array
   method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
   headers?: IRequestHeader; // default get
   /**
-   * baseUrl: url == baseUrl+api
+   * path of request url
    */
-  baseUrl?: string;
+  path?: string;
   /**
-   * fullurl: url == baseUrl+api
+   * host of request url
+   */
+  host?: string;
+  /**
+   * if this is set , host and path while be ignored , otherwise url = host+path
    */
   url?: string;
   /**
@@ -59,7 +62,7 @@ export interface HttpRequestConfig {
 export type InterceptorResult<T> = T;
 
 export interface ClientConfig {
-  baseUrl?: string;
+  host?: string;
   requestCore: RequestCore;
   interceptors?: Interceptor<any>[];
   errorHandler?: (err: any) => void;
@@ -130,12 +133,12 @@ export class ApiClientImpl implements ApiClient {
     let httpResponse: HttpResponse<any> | undefined;
     try {
       if (!request.url) {
-        if (request.baseUrl) {
-          request.url = request.baseUrl + request.api;
-        } else if (this.config.baseUrl) {
-          request.url = this.config.baseUrl + request.api;
+        if (request.host) {
+          request.url = request.host + request.path;
+        } else if (this.config.host) {
+          request.url = this.config.host + request.path;
         } else {
-          request.url = request.api;
+          request.url = request.path;
         }
       }
       return (await new Request(this.interceptors).launch(request)) as T;

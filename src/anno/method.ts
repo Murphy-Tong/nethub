@@ -21,10 +21,10 @@ export class GetDecorator extends NetHubMethodDecorator<
     const that = this;
     return function (currentRequestConfig: HttpRequestConfig) {
       if (typeof value === "string") {
-        currentRequestConfig.api = value;
+        currentRequestConfig.path = value;
         currentRequestConfig.method = that.method;
       } else {
-        currentRequestConfig.api = value.path;
+        currentRequestConfig.path = value.path;
         currentRequestConfig.method = value.method;
       }
       return currentRequestConfig;

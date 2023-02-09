@@ -21,7 +21,7 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
             let config: HttpRequestConfig = {};
 
             if (host) {
-              config.baseUrl = host;
+              config.host = host;
             }
 
             const resolve = async function (

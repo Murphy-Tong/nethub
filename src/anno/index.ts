@@ -28,3 +28,5 @@ export * from "./header";
 export * from "./method";
 export * from "./query";
 export * from './service'
+export * from './host'
+export * from './url'

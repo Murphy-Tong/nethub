@@ -3,7 +3,7 @@
 class HostDecor extends NetHubMethodDecorator<string> {
   collectMethodWithValue(value: string) {
     return function (config: HttpRequestConfig) {
-      config.baseUrl = value;
+      config.host = value;
       return config;
     };
   }
