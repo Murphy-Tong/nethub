@@ -39,25 +39,20 @@ export class GetDecorator extends NetHubMethodDecorator<
   }
 }
 
-export const GET:
-  | IDecoratorWithValue<MethodDecorator, string>
-  | MethodDecorator = new GetDecorator("GET").regist();
+export const GET: IDecoratorWithValue<MethodDecorator, string> &
+  MethodDecorator = new GetDecorator("GET").regist();
 
-export const POST:
-  | IDecoratorWithValue<MethodDecorator, string>
-  | MethodDecorator = new GetDecorator("POST").regist();
+export const POST: IDecoratorWithValue<MethodDecorator, string> &
+  MethodDecorator = new GetDecorator("POST").regist();
 
-export const PUT:
-  | IDecoratorWithValue<MethodDecorator, string>
-  | MethodDecorator = new GetDecorator("PUT").regist();
+export const PUT: IDecoratorWithValue<MethodDecorator, string> &
+  MethodDecorator = new GetDecorator("PUT").regist();
 
-export const DELETE:
-  | IDecoratorWithValue<MethodDecorator, string>
-  | MethodDecorator = new GetDecorator("DELETE").regist();
+export const DELETE: IDecoratorWithValue<MethodDecorator, string> &
+  MethodDecorator = new GetDecorator("DELETE").regist();
 
-export const HEAD:
-  | IDecoratorWithValue<MethodDecorator, string>
-  | MethodDecorator = new GetDecorator("HEAD").regist();
+export const HEAD: IDecoratorWithValue<MethodDecorator, string> &
+  MethodDecorator = new GetDecorator("HEAD").regist();
 
 export const METHOD: IDecoratorWithValue<
   MethodDecorator,
