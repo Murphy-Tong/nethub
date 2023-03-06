@@ -1,6 +1,6 @@
 {
   "name": "nethub",
-  "version": "1.10.6",
+  "version": "2.0.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "directories": {
