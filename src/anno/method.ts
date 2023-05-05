@@ -1,6 +1,6 @@
 import { HttpRequestConfig } from "../ApiClientImpl";
 import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
-import NetHubMethodDecorator from "./define/method";
+import { NetHubMethodDecorator } from "./define/method";
 
 export class GetDecorator extends NetHubMethodDecorator<
   string | { path?: string; method: string }

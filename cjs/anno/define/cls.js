@@ -1,11 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NetHubClassDecorator = void 0;
 const interceptors_1 = require("../interceptors");
-const decorator_1 = __importDefault(require("./decorator"));
-class NetHubClassDecorator extends decorator_1.default {
+const decorator_1 = require("./decorator");
+class NetHubClassDecorator extends decorator_1.NetHubDecorator {
     regist() {
         const that = this;
         return function (target) {
@@ -21,4 +19,4 @@ class NetHubClassDecorator extends decorator_1.default {
         };
     }
 }
-exports.default = NetHubClassDecorator;
+exports.NetHubClassDecorator = NetHubClassDecorator;

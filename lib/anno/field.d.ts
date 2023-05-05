@@ -1,5 +1,5 @@
 import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
-import NetHubFieldDecorator from "./define/field";
+import { NetHubFieldDecorator } from "./define/field";
 export declare class FieldDecorator extends NetHubFieldDecorator<string> {
     name: string;
     collectFieldWithValue(value: string, target: Object, propertyKey: string, parameterIndex: number): NetHubInterpreter;

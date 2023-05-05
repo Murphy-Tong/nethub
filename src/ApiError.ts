@@ -1,6 +1,6 @@
 import { HttpResponse } from "./ApiClientImpl";
 
-export default class ApiError extends Error {
+export class ApiError extends Error {
   static NOLOGIN = new ApiError("登陆失效", -10001);
 
   static ERR_CODES = {

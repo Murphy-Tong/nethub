@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QueryMap = exports.Query = exports.QueryMapDecorator = exports.QueryDecorator = void 0;
-const field_1 = __importDefault(require("./define/field"));
-class QueryDecorator extends field_1.default {
+const field_1 = require("./define/field");
+class QueryDecorator extends field_1.NetHubFieldDecorator {
     constructor() {
         super(...arguments);
         this.name = "QueryDecorator";
@@ -22,7 +19,7 @@ class QueryDecorator extends field_1.default {
     }
 }
 exports.QueryDecorator = QueryDecorator;
-class QueryMapDecorator extends field_1.default {
+class QueryMapDecorator extends field_1.NetHubFieldDecorator {
     constructor() {
         super(...arguments);
         this.name = "QueryMapDecorator";

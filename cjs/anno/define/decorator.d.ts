@@ -4,7 +4,7 @@ export interface NetHubInterpreter {
     (currentRequestConfig: HttpRequestConfig, argumentValue: any, targetServiceConstructor: object, methodName: string | Symbol, argumentIndex?: number): HttpRequestConfig | Promise<HttpRequestConfig>;
 }
 export declare function NOOPNetHubInterpreter(currentRequestConfig: HttpRequestConfig): HttpRequestConfig;
-export default class NetHubDecorator<V = any> {
+export declare class NetHubDecorator<V = any> {
     name: string;
     collectClass(cls: object): NetHubInterpreter;
     collectClassWithValue(value: V, cls: object): NetHubInterpreter;

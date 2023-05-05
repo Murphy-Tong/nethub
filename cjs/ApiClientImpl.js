@@ -8,12 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiClientImpl = void 0;
-const ApiError_1 = __importDefault(require("./ApiError"));
+exports.createInstance = exports.ApiClientImpl = void 0;
+const ApiError_1 = require("./ApiError");
 class Request {
     constructor(interceptors) {
         this.interceptors = interceptors;
@@ -35,7 +32,7 @@ const DEFAULT_INTERCEPTORS = [
         return __awaiter(this, void 0, void 0, function* () {
             const resp = yield next(req);
             if (resp.statusCode < 200 || resp.statusCode >= 300) {
-                throw new ApiError_1.default(resp.errMsg, resp.statusCode, resp);
+                throw new ApiError_1.ApiError(resp.errMsg, resp.statusCode, resp);
             }
             return resp;
         });
@@ -75,10 +72,10 @@ class ApiClientImpl {
             }
             catch (e) {
                 (_b = (_a = this.config).errorHandler) === null || _b === void 0 ? void 0 : _b.call(_a, e);
-                if (e instanceof ApiError_1.default) {
+                if (e instanceof ApiError_1.ApiError) {
                     return Promise.reject(e);
                 }
-                return Promise.reject(new ApiError_1.default(e.message, undefined, httpResponse));
+                return Promise.reject(new ApiError_1.ApiError(e.message, undefined, httpResponse));
             }
         });
     }
@@ -87,4 +84,4 @@ exports.ApiClientImpl = ApiClientImpl;
 function createInstance(config) {
     return new ApiClientImpl(config);
 }
-exports.default = createInstance;
+exports.createInstance = createInstance;

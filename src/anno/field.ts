@@ -1,6 +1,6 @@
 import { HttpRequestConfig } from "../ApiClientImpl";
 import { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
-import NetHubFieldDecorator from "./define/field";
+import { NetHubFieldDecorator } from "./define/field";
 
 export class FieldDecorator extends NetHubFieldDecorator<string> {
   name = "FieldDecorator";

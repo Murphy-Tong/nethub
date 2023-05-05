@@ -1,5 +1,6 @@
 import { HttpRequestConfig } from "../ApiClientImpl";
-import NetHubDecorator, {
+import {
+  NetHubDecorator,
   IDecoratorWithValue,
   NetHubInterpreter,
 } from "./define/decorator";

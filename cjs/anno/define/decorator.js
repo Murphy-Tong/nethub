@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NOOPNetHubInterpreter = void 0;
+exports.NetHubDecorator = exports.NOOPNetHubInterpreter = void 0;
 function NOOPNetHubInterpreter(currentRequestConfig) {
     return currentRequestConfig;
 }
@@ -28,4 +28,4 @@ class NetHubDecorator {
         return NOOPNetHubInterpreter;
     }
 }
-exports.default = NetHubDecorator;
+exports.NetHubDecorator = NetHubDecorator;

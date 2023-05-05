@@ -1,12 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Header = exports.HeaderDecorator = void 0;
-const decorator_1 = __importDefault(require("./define/decorator"));
+const decorator_1 = require("./define/decorator");
 const interceptors_1 = require("./interceptors");
-class HeaderDecorator extends decorator_1.default {
+class HeaderDecorator extends decorator_1.NetHubDecorator {
     constructor() {
         super(...arguments);
         this.name = "HeaderDecorator";

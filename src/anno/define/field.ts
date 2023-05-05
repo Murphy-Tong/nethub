@@ -1,7 +1,7 @@
 import { addNetHubInterpreter } from "../interceptors";
-import NetHubDecorator, { IDecoratorWithValue } from "./decorator";
+import { NetHubDecorator, IDecoratorWithValue } from "./decorator";
 
-export default class NetHubFieldDecorator<V = any> extends NetHubDecorator {
+export class NetHubFieldDecorator<V = any> extends NetHubDecorator {
   regist(): IDecoratorWithValue<ParameterDecorator, V> & ParameterDecorator {
     const that = this;
     return <IDecoratorWithValue<ParameterDecorator, V> & ParameterDecorator>(

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { HttpRequestConfig, HttpResponse, RequestCore } from "./ApiClientImpl";
 
-export default class DefaultAxiosRequestCoreImpl implements RequestCore {
+export class DefaultAxiosRequestCoreImpl implements RequestCore {
   onError(e: AxiosError): Promise<HttpResponse<any>> {
     // throw new ApiError(
     //   e.response?.statusText || e.message,

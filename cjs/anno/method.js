@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.METHOD = exports.HEAD = exports.DELETE = exports.PUT = exports.POST = exports.GET = exports.GetDecorator = void 0;
-const method_1 = __importDefault(require("./define/method"));
-class GetDecorator extends method_1.default {
+const method_1 = require("./define/method");
+class GetDecorator extends method_1.NetHubMethodDecorator {
     constructor(method = "GET") {
         super();
         this.method = "GET";

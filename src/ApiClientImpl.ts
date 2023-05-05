@@ -1,5 +1,5 @@
 import type { Stream } from "stream";
-import ApiError from "./ApiError";
+import { ApiError } from "./ApiError";
 
 export type Iterial = undefined | string | number | boolean;
 export interface IRequestQuery {
@@ -152,6 +152,6 @@ export class ApiClientImpl implements ApiClient {
   }
 }
 
-export default function createInstance(config: ClientConfig) {
+export function createInstance(config: ClientConfig) {
   return new ApiClientImpl(config);
 }

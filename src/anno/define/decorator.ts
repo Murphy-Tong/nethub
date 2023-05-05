@@ -16,7 +16,7 @@ export function NOOPNetHubInterpreter(currentRequestConfig: HttpRequestConfig) {
   return currentRequestConfig;
 }
 
-export default class NetHubDecorator<V = any> {
+export class NetHubDecorator<V = any> {
   name = "NetHubDecorator";
 
   collectClass(cls: object): NetHubInterpreter {

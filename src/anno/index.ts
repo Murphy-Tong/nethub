@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { ApiClient } from "../ApiClientImpl";
 import { IService } from "./service";
 
-export default class NetHub {
+export class NetHub {
   private client: ApiClient | undefined;
 
   setClient(client: ApiClient) {
@@ -27,6 +27,6 @@ export * from "./field";
 export * from "./header";
 export * from "./method";
 export * from "./query";
-export * from './service'
-export * from './host'
-export * from './url'
+export * from "./service";
+export * from "./host";
+export * from "./url";

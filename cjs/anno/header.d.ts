@@ -1,4 +1,4 @@
-import NetHubDecorator, { IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
+import { NetHubDecorator, IDecoratorWithValue, NetHubInterpreter } from "./define/decorator";
 export declare class HeaderDecorator extends NetHubDecorator<[
     string,
     string

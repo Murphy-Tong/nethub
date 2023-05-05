@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FieldMap = exports.Field = exports.FieldMapMapDecorator = exports.FieldDecorator = void 0;
-const field_1 = __importDefault(require("./define/field"));
-class FieldDecorator extends field_1.default {
+const field_1 = require("./define/field");
+class FieldDecorator extends field_1.NetHubFieldDecorator {
     constructor() {
         super(...arguments);
         this.name = "FieldDecorator";
@@ -25,7 +22,7 @@ class FieldDecorator extends field_1.default {
     }
 }
 exports.FieldDecorator = FieldDecorator;
-class FieldMapMapDecorator extends field_1.default {
+class FieldMapMapDecorator extends field_1.NetHubFieldDecorator {
     constructor() {
         super(...arguments);
         this.name = "FieldMapMapDecorator";

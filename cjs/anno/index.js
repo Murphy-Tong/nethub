@@ -14,6 +14,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NetHub = void 0;
 require("reflect-metadata");
 class NetHub {
     setClient(client) {
@@ -27,7 +28,7 @@ class NetHub {
         return new cls(this);
     }
 }
-exports.default = NetHub;
+exports.NetHub = NetHub;
 __exportStar(require("./define/cls"), exports);
 __exportStar(require("./define/decorator"), exports);
 __exportStar(require("./define/field"), exports);

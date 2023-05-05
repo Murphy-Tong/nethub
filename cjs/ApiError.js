@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ApiError = void 0;
 class ApiError extends Error {
     constructor(msg, code, response) {
         super(msg);
@@ -15,7 +16,7 @@ class ApiError extends Error {
         this.response = response;
     }
 }
-exports.default = ApiError;
+exports.ApiError = ApiError;
 ApiError.NOLOGIN = new ApiError("登陆失效", -10001);
 ApiError.ERR_CODES = {
     INVALIDATE_CODE: -1,

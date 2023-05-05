@@ -58,4 +58,4 @@ export declare class ApiClientImpl implements ApiClient {
     constructor(config: ClientConfig);
     execute<T>(request: HttpRequestConfig): Promise<T>;
 }
-export default function createInstance(config: ClientConfig): ApiClientImpl;
+export declare function createInstance(config: ClientConfig): ApiClientImpl;

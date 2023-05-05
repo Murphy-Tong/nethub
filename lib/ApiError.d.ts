@@ -1,5 +1,5 @@
 import { HttpResponse } from "./ApiClientImpl";
-export default class ApiError extends Error {
+export declare class ApiError extends Error {
     static NOLOGIN: ApiError;
     static ERR_CODES: {
         INVALIDATE_CODE: number;
