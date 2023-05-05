@@ -17,3 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./axiosNetCore"), exports);
 __exportStar(require("./ApiError"), exports);
 __exportStar(require("./ApiClientImpl"), exports);
+__exportStar(require("./anno/index"), exports);
