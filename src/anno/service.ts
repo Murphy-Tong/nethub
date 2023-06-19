@@ -11,7 +11,7 @@ export interface IService<T> {
   new (hub: IClientProvider): T;
 }
 
-function createServiceProxy<T>(constructor: IService<T>, host?: string) {
+function createServiceProxy<T>(constructor: IService<T>, baseURL?: string) {
   return class {
     constructor(hub: IClientProvider) {
       return new Proxy(this, {
@@ -20,8 +20,8 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
             const args = [...arguments];
             let config: HttpRequestConfig = {};
 
-            if (host) {
-              config.host = host;
+            if (baseURL) {
+              config.baseURL = baseURL;
             }
 
             const resolve = async function (
@@ -97,7 +97,7 @@ function createServiceProxy<T>(constructor: IService<T>, host?: string) {
 }
 
 export function Service(
-  host: string
+  baseURL: string
 ): <T>(constructor: IService<T>) => IService<T>;
 
 export function Service<T>(constructor: IService<T>): IService<T>;

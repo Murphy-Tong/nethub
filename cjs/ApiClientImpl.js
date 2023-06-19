@@ -58,11 +58,11 @@ class ApiClientImpl {
             let httpResponse;
             try {
                 if (!request.url) {
-                    if (request.host) {
-                        request.url = request.host + request.path;
+                    if (request.baseURL) {
+                        request.url = request.baseURL + request.path;
                     }
-                    else if (this.config.host) {
-                        request.url = this.config.host + request.path;
+                    else if (this.config.baseURL) {
+                        request.url = this.config.baseURL + request.path;
                     }
                     else {
                         request.url = request.path;

@@ -1,11 +1,8 @@
-/// <reference types="node" />
-/// <reference types="node" />
-import type { Stream } from "stream";
 export declare type Iterial = undefined | string | number | boolean;
 export interface IRequestQuery {
     [key: string]: Iterial | Iterial[] | IRequestQuery;
 }
-export declare type IRequestBody = Iterial | IRequestQuery | FormData | File | Blob | ArrayBuffer | URLSearchParams | Stream | Buffer;
+export declare type IRequestBody = Record<string, any> | any;
 export interface IRequestHeader {
     [key: string]: Iterial | string[];
 }
@@ -22,8 +19,8 @@ export interface HttpResponse<T> {
     data: T;
 }
 export interface HttpRequestConfig {
-    query?: IRequestQuery;
-    body?: IRequestBody;
+    params?: IRequestQuery;
+    data?: IRequestBody;
     method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
     headers?: IRequestHeader;
     /**
@@ -33,9 +30,9 @@ export interface HttpRequestConfig {
     /**
      * host of request url
      */
-    host?: string;
+    baseURL?: string;
     /**
-     * if this is set , host and path while be ignored , otherwise url = host+path
+     * if this is set , baseURL and path while be ignored , otherwise url = baseURL+path
      */
     url?: string;
     /**
@@ -45,7 +42,7 @@ export interface HttpRequestConfig {
 }
 export declare type InterceptorResult<T> = T;
 export interface ClientConfig {
-    host?: string;
+    baseURL?: string;
     requestCore: RequestCore;
     interceptors?: Interceptor<any>[];
     errorHandler?: (err: any) => void;

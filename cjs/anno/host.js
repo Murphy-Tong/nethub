@@ -6,7 +6,7 @@ class HostDecorator extends method_1.NetHubMethodDecorator {
     collectMethodWithValue(value, target, propertyKey) {
         const that = this;
         return function (currentRequestConfig) {
-            currentRequestConfig.host = value;
+            currentRequestConfig.baseURL = value;
             return currentRequestConfig;
         };
     }

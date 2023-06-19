@@ -8,11 +8,11 @@ class HeaderDecorator extends decorator_1.NetHubDecorator {
         super(...arguments);
         this.name = "HeaderDecorator";
     }
-    collectFieldWithValue(value, target, propertyKey, parameterIndex) {
+    collectFieldWithValue(value) {
         if (value === undefined || value === null) {
             throw new Error("NetHub: @Header value is null");
         }
-        return function (currentRequestConfig, argumentValue, targetServiceConstructor, methodName) {
+        return function (currentRequestConfig, argumentValue) {
             var _a;
             currentRequestConfig.headers = currentRequestConfig.headers || {};
             if (currentRequestConfig.headers[value]) {
@@ -32,26 +32,31 @@ class HeaderDecorator extends decorator_1.NetHubDecorator {
             return currentRequestConfig;
         };
     }
-    collectMethodWithValue(value, target, propertyKey) {
-        if (value === undefined || value === null) {
-            throw new Error("NetHub: @Header value is null");
-        }
-        return function (currentRequestConfig) {
-            var _a;
-            currentRequestConfig.headers = currentRequestConfig.headers || {};
-            if (currentRequestConfig.headers[value[0]]) {
-                if (Array.isArray(currentRequestConfig.headers[value[0]])) {
-                    currentRequestConfig.headers[value[0]].push(value[1]);
-                }
-                else {
-                    currentRequestConfig.headers[value[0]] = [
-                        ((_a = currentRequestConfig.headers[value[0]]) === null || _a === void 0 ? void 0 : _a.toString()) || "",
-                        value[1],
-                    ];
-                }
+    addHeader(headers, key, value) {
+        if (Reflect.has(headers, key)) {
+            if (Array.isArray(headers[key])) {
+                headers[key].push(value);
             }
             else {
-                currentRequestConfig.headers[value[0]] = value[1];
+                headers[key] = [headers[key], value];
+            }
+        }
+        else {
+            headers[key] = value;
+        }
+    }
+    collectMethodWithValue(value) {
+        if (value === undefined || value === null || value.length % 2 !== 0) {
+            throw new Error("NetHub: @Header value is null or length 不能被2整除");
+        }
+        return (currentRequestConfig) => {
+            currentRequestConfig.headers = currentRequestConfig.headers || {};
+            const val = value;
+            for (let index = 0; index < value.length;) {
+                const key = value[index];
+                const val = value[index + 1];
+                this.addHeader(currentRequestConfig.headers, key, val);
+                index += 2;
             }
             return currentRequestConfig;
         };
@@ -69,9 +74,9 @@ class HeaderDecorator extends decorator_1.NetHubDecorator {
             }
             return function (target, propertyKey, parameterIndex) {
                 if (typeof parameterIndex === "number") {
-                    return (0, interceptors_1.addNetHubInterpreter)(that.collectFieldWithValue(value, target, propertyKey, parameterIndex), target, propertyKey, String(parameterIndex));
+                    return (0, interceptors_1.addNetHubInterpreter)(that.collectFieldWithValue(value), target, propertyKey, String(parameterIndex));
                 }
-                return (0, interceptors_1.addNetHubInterpreter)(that.collectMethodWithValue(value, target, propertyKey), target, propertyKey);
+                return (0, interceptors_1.addNetHubInterpreter)(that.collectMethodWithValue(value), target, propertyKey);
             };
         };
     }

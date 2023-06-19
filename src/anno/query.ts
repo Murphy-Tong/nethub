@@ -5,23 +5,16 @@ import { NetHubFieldDecorator } from "./define/field";
 export class QueryDecorator extends NetHubFieldDecorator<string> {
   name = "QueryDecorator";
 
-  collectFieldWithValue(
-    value: string,
-    target: Object,
-    propertyKey: string,
-    parameterIndex: number
-  ): NetHubInterpreter {
+  collectFieldWithValue(value: string): NetHubInterpreter {
     if (value === undefined || value === null) {
-      throw new Error("NetHub: @Query value is null");
+      throw new Error("NetHub: @Query key is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
-      argumentValue: any,
-      targetServiceConstructor: object,
-      methodName: string | Symbol
+      argumentValue: any
     ) {
-      currentRequestConfig.query = currentRequestConfig.query || {};
-      currentRequestConfig.query[value] = argumentValue;
+      currentRequestConfig.params = currentRequestConfig.params || {};
+      currentRequestConfig.params[value] = argumentValue;
       return currentRequestConfig;
     };
   }
@@ -30,22 +23,16 @@ export class QueryDecorator extends NetHubFieldDecorator<string> {
 export class QueryMapDecorator extends NetHubFieldDecorator<void> {
   name = "QueryMapDecorator";
 
-  collectField(
-    target: Object,
-    propertyKey: string,
-    parameterIndex: number
-  ): NetHubInterpreter {
+  collectField(): NetHubInterpreter {
     return function (
       currentRequestConfig: HttpRequestConfig,
-      argumentValue: any,
-      targetServiceConstructor: object,
-      methodName: string | Symbol
+      argumentValue: any
     ) {
       if (argumentValue && typeof argumentValue !== "object") {
         throw new Error("NetHub: @QueryMap 应该用于对象");
       }
-      currentRequestConfig.query = Object.assign(
-        currentRequestConfig.query || {},
+      currentRequestConfig.params = Object.assign(
+        currentRequestConfig.params || {},
         argumentValue || {}
       );
       return currentRequestConfig;

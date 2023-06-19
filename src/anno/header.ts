@@ -1,30 +1,21 @@
 import { HttpRequestConfig } from "../ApiClientImpl";
 import {
-  NetHubDecorator,
   IDecoratorWithValue,
+  NetHubDecorator,
   NetHubInterpreter,
 } from "./define/decorator";
 import { addNetHubInterpreter } from "./interceptors";
 
-export class HeaderDecorator extends NetHubDecorator<
-  [string, string] | string
-> {
+export class HeaderDecorator extends NetHubDecorator<string[] | string> {
   name = "HeaderDecorator";
 
-  collectFieldWithValue(
-    value: string,
-    target: Object,
-    propertyKey: string,
-    parameterIndex: number
-  ): NetHubInterpreter {
+  collectFieldWithValue(value: string): NetHubInterpreter {
     if (value === undefined || value === null) {
       throw new Error("NetHub: @Header value is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
-      argumentValue: any,
-      targetServiceConstructor: object,
-      methodName: string | Symbol
+      argumentValue: any
     ) {
       currentRequestConfig.headers = currentRequestConfig.headers || {};
       if (currentRequestConfig.headers[value]) {
@@ -44,30 +35,33 @@ export class HeaderDecorator extends NetHubDecorator<
       return currentRequestConfig;
     };
   }
-  collectMethodWithValue(
-    value: [string, string],
-    target: Object,
-    propertyKey: string
-  ): NetHubInterpreter {
-    if (value === undefined || value === null) {
-      throw new Error("NetHub: @Header value is null");
-    }
-    return function (currentRequestConfig: HttpRequestConfig) {
-      currentRequestConfig.headers = currentRequestConfig.headers || {};
-      if (currentRequestConfig.headers[value[0]]) {
-        if (Array.isArray(currentRequestConfig.headers[value[0]])) {
-          (currentRequestConfig.headers[value[0]] as Array<string>).push(
-            value[1]
-          );
-        } else {
-          currentRequestConfig.headers[value[0]] = [
-            currentRequestConfig.headers[value[0]]?.toString() || "",
-            value[1],
-          ];
-        }
+
+  addHeader(headers: Record<string, any>, key: string, value: string) {
+    if (Reflect.has(headers, key)) {
+      if (Array.isArray(headers[key])) {
+        (headers[key] as Array<string>).push(value);
       } else {
-        currentRequestConfig.headers[value[0]] = value[1];
+        headers[key] = [headers[key], value];
       }
+    } else {
+      headers[key] = value;
+    }
+  }
+
+  collectMethodWithValue(value: string[]): NetHubInterpreter {
+    if (value === undefined || value === null || value.length % 2 !== 0) {
+      throw new Error("NetHub: @Header value is null or length 不能被2整除");
+    }
+    return (currentRequestConfig: HttpRequestConfig) => {
+      currentRequestConfig.headers = currentRequestConfig.headers || {};
+      const val = value;
+      for (let index = 0; index < value.length; ) {
+        const key = value[index];
+        const val = value[index + 1];
+        this.addHeader(currentRequestConfig.headers, key, val);
+        index += 2;
+      }
+
       return currentRequestConfig;
     };
   }
@@ -92,19 +86,14 @@ export class HeaderDecorator extends NetHubDecorator<
       ) {
         if (typeof parameterIndex === "number") {
           return addNetHubInterpreter(
-            that.collectFieldWithValue(
-              value,
-              target,
-              propertyKey,
-              parameterIndex
-            ),
+            that.collectFieldWithValue(value),
             target,
             propertyKey,
             String(parameterIndex)
           );
         }
         return addNetHubInterpreter(
-          that.collectMethodWithValue(value, target, propertyKey),
+          that.collectMethodWithValue(value),
           target,
           propertyKey
         );

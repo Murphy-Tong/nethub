@@ -1,4 +1,3 @@
-import type { Stream } from "stream";
 import { ApiError } from "./ApiError";
 
 export type Iterial = undefined | string | number | boolean;
@@ -6,16 +5,7 @@ export interface IRequestQuery {
   [key: string]: Iterial | Iterial[] | IRequestQuery;
 }
 
-export type IRequestBody =
-  | Iterial
-  | IRequestQuery
-  | FormData
-  | File
-  | Blob
-  | ArrayBuffer
-  | URLSearchParams
-  | Stream
-  | Buffer;
+export type IRequestBody = Record<string, any> | any;
 
 export interface IRequestHeader {
   [key: string]: Iterial | string[];
@@ -37,8 +27,8 @@ export interface HttpResponse<T> {
 }
 
 export interface HttpRequestConfig {
-  query?: IRequestQuery; // url query
-  body?: IRequestBody; // body array
+  params?: IRequestQuery; // url query
+  data?: IRequestBody; // body array
   method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
   headers?: IRequestHeader; // default get
   /**
@@ -48,9 +38,9 @@ export interface HttpRequestConfig {
   /**
    * host of request url
    */
-  host?: string;
+  baseURL?: string;
   /**
-   * if this is set , host and path while be ignored , otherwise url = host+path
+   * if this is set , baseURL and path while be ignored , otherwise url = baseURL+path
    */
   url?: string;
   /**
@@ -62,7 +52,7 @@ export interface HttpRequestConfig {
 export type InterceptorResult<T> = T;
 
 export interface ClientConfig {
-  host?: string;
+  baseURL?: string;
   requestCore: RequestCore;
   interceptors?: Interceptor<any>[];
   errorHandler?: (err: any) => void;
@@ -133,10 +123,10 @@ export class ApiClientImpl implements ApiClient {
     let httpResponse: HttpResponse<any> | undefined;
     try {
       if (!request.url) {
-        if (request.host) {
-          request.url = request.host + request.path;
-        } else if (this.config.host) {
-          request.url = this.config.host + request.path;
+        if (request.baseURL) {
+          request.url = request.baseURL + request.path;
+        } else if (this.config.baseURL) {
+          request.url = this.config.baseURL + request.path;
         } else {
           request.url = request.path;
         }

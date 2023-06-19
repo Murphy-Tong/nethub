@@ -10,7 +10,7 @@ export class HostDecorator extends NetHubMethodDecorator<string> {
   ): NetHubInterpreter {
     const that = this;
     return function (currentRequestConfig: HttpRequestConfig) {
-      currentRequestConfig.host = value;
+      currentRequestConfig.baseURL = value;
       return currentRequestConfig;
     };
   }

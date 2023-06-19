@@ -40,13 +40,13 @@ export class DefaultAxiosRequestCoreImpl implements RequestCore {
     // - Node 专属: Stream, Buffer
    */
   onRequest(request: HttpRequestConfig): Promise<AxiosResponse<any, any>> {
-    const { url = "", method = "GET", query, body, headers = {} } = request;
+    const { url = "", method = "GET", params, data, headers = {} } = request;
     return axios.request({
       withCredentials: false,
       method,
       url,
-      data: body,
-      params: query,
+      data,
+      params,
       headers,
     });
   }

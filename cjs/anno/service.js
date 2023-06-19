@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Service = void 0;
 const interceptors_1 = require("./interceptors");
-function createServiceProxy(constructor, host) {
+function createServiceProxy(constructor, baseURL) {
     return class {
         constructor(hub) {
             return new Proxy(this, {
@@ -20,8 +20,8 @@ function createServiceProxy(constructor, host) {
                         return __awaiter(this, arguments, void 0, function* () {
                             const args = [...arguments];
                             let config = {};
-                            if (host) {
-                                config.host = host;
+                            if (baseURL) {
+                                config.baseURL = baseURL;
                             }
                             const resolve = function (throwMsg, interpreters, val, index) {
                                 return __awaiter(this, void 0, void 0, function* () {

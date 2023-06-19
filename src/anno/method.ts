@@ -13,7 +13,7 @@ export class GetDecorator extends NetHubMethodDecorator<
     this.method = method;
   }
 
-  collectMethod(target: Object, propertyKey: string): NetHubInterpreter {
+  collectMethod(): NetHubInterpreter {
     return (currentRequestConfig: HttpRequestConfig) => {
       currentRequestConfig.method = this.method;
       return currentRequestConfig;
@@ -21,9 +21,7 @@ export class GetDecorator extends NetHubMethodDecorator<
   }
 
   collectMethodWithValue(
-    value: string | { path: string; method: string },
-    target: Object,
-    propertyKey: string
+    value: string | { path: string; method: string }
   ): NetHubInterpreter {
     const that = this;
     return function (currentRequestConfig: HttpRequestConfig) {

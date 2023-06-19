@@ -5,29 +5,21 @@ import { NetHubFieldDecorator } from "./define/field";
 export class FieldDecorator extends NetHubFieldDecorator<string> {
   name = "FieldDecorator";
 
-  collectFieldWithValue(
-    value: string,
-    target: Object,
-    propertyKey: string,
-    parameterIndex: number
-  ): NetHubInterpreter {
+  collectFieldWithValue(value: string): NetHubInterpreter {
     if (value === undefined || value === null) {
       throw new Error("NetHub: @Filed value is null");
     }
     return function (
       currentRequestConfig: HttpRequestConfig,
-      argumentValue: any,
-      targetServiceConstructor: object,
-      methodName: string | Symbol,
-      argumentIndex?: number
+      argumentValue: any
     ) {
-      currentRequestConfig.body = currentRequestConfig.body || {};
-      if (typeof currentRequestConfig.body !== "object") {
+      currentRequestConfig.data = currentRequestConfig.data ?? {};
+      if (typeof currentRequestConfig.data !== "object") {
         throw new Error(
           "NetHub: @Field 当前body已经不是简单对象，无法添加更多参数"
         );
       }
-      (currentRequestConfig.body as Record<string, any>)[value] = argumentValue;
+      (currentRequestConfig.data as Record<string, any>)[value] = argumentValue;
       return currentRequestConfig;
     };
   }
@@ -36,26 +28,19 @@ export class FieldDecorator extends NetHubFieldDecorator<string> {
 export class FieldMapMapDecorator extends NetHubFieldDecorator<string> {
   name = "FieldMapMapDecorator";
 
-  collectField(
-    target: Object,
-    propertyKey: string,
-    parameterIndex: number
-  ): NetHubInterpreter {
+  collectField(): NetHubInterpreter {
     return function (
       currentRequestConfig: HttpRequestConfig,
-      argumentValue: any,
-      targetServiceConstructor: object,
-      methodName: string | Symbol,
-      argumentIndex?: number
+      argumentValue: any
     ) {
-      currentRequestConfig.body = currentRequestConfig.body || {};
-      if (typeof currentRequestConfig.body !== "object") {
+      currentRequestConfig.data = currentRequestConfig.data ?? {};
+      if (typeof currentRequestConfig.data !== "object") {
         throw new Error(
           "NetHub: @FieldMap 当前body已经不是简单对象，无法添加更多参数"
         );
       }
-      currentRequestConfig.body = Object.assign(
-        currentRequestConfig.body,
+      currentRequestConfig.data = Object.assign(
+        currentRequestConfig.data,
         argumentValue || {}
       );
       return currentRequestConfig;

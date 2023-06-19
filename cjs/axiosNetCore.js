@@ -43,13 +43,13 @@ class DefaultAxiosRequestCoreImpl {
       // - Node 专属: Stream, Buffer
      */
     onRequest(request) {
-        const { url = "", method = "GET", query, body, headers = {} } = request;
+        const { url = "", method = "GET", params, data, headers = {} } = request;
         return axios_1.default.request({
             withCredentials: false,
             method,
             url,
-            data: body,
-            params: query,
+            data,
+            params,
             headers,
         });
     }

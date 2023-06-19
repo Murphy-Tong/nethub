@@ -9,13 +9,13 @@ class GetDecorator extends method_1.NetHubMethodDecorator {
         this.name = "GetDecorator";
         this.method = method;
     }
-    collectMethod(target, propertyKey) {
+    collectMethod() {
         return (currentRequestConfig) => {
             currentRequestConfig.method = this.method;
             return currentRequestConfig;
         };
     }
-    collectMethodWithValue(value, target, propertyKey) {
+    collectMethodWithValue(value) {
         const that = this;
         return function (currentRequestConfig) {
             if (typeof value === "string") {
