@@ -77,7 +77,7 @@ class Api {
 }
 ```
 
-## 处理收集到的参数，发起请求 {#requestConfig}
+## 处理收集到的参数，发起请求 <a id='requestConfig'></a>
 
 ```typescript
 const api = new NetHub()
