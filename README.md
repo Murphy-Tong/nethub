@@ -1,4 +1,4 @@
-### 这是一个方法注解收集器，所有参数全部都会收集到 [user-content-requestConfig](#requestConfig) 中。与网络请求库搭配实现网络请求。达到仅定义请求关键信息就可以发起请求的目的。
+### 这是一个方法注解收集器，所有参数全部都会收集到 [requestConfig](#user-content-requestConfig) 中。与网络请求库搭配实现网络请求。达到仅定义请求关键信息就可以发起请求的目的。
 
 ## 注解
 
