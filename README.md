@@ -1,4 +1,4 @@
-### 这是一个方法注解收集器，所有参数全部都会收集到 requestConfig 中。与网络请求库搭配实现网络请求。达到仅定义请求关键信息就可以发起请求的目的。
+### 这是一个方法注解收集器，所有参数全部都会收集到 [requestConfig](#requestConfig) 中。与网络请求库搭配实现网络请求。达到仅定义请求关键信息就可以发起请求的目的。
 
 ## 注解
 
@@ -8,7 +8,7 @@
 
 | 注解                       | 说明                                        | 访问方式              |
 | -------------------------- | ------------------------------------------- | --------------------- |
-| Service(baseURL) / Service | 标记此 class 需要处理，参数为域名，可不填写 | requestConfig.baseURL |
+| Service(baseURL) / Service | 标记此 class 需要处理；参数为域名，可不填写 | requestConfig.baseURL |
 
 eg:
 
@@ -77,14 +77,14 @@ class Api {
 }
 ```
 
-## 处理收集到的参数，发起请求
+## 处理收集到的参数，发起请求 {#requestConfig}
 
 ```typescript
 const api = new NetHub()
   .setClient({
-    execute(request) {
+    execute(requestConfig) {
       // 在这里可以获取到方法执行时拿到的所有注解以及参数，处理request参数然后发起请求
-      return axios.request(request);
+      return axios.request(requestConfig);
     },
   })
   .create(Api);
