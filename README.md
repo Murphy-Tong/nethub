@@ -1,6 +1,83 @@
-### 这是一个方法注解收集器，所有参数全部都会收集到 [requestConfig](#user-content-requestConfig) 中。与网络请求库搭配实现网络请求。达到仅定义请求关键信息就可以发起请求的目的。
+## 简单使用
 
-## 注解
+1. 创建 client
+
+```javascript
+
+const client = createInstance({
+    baseUrl: "https://xxx.com"
+    requestCore: new DefaultAxiosRequestCoreImpl(),// 使用axios发送请求
+    interceptors:[appVersionInterceptor],//配置请求拦截器，可以对请求数据、响应数据进行处理
+  });
+
+```
+
+2. 使用 client 发送请求。支持的[参数(HttpRequestConfig)](https://github.com/Murphy-Tong/nethub/blob/master/src/ApiClientImpl.ts#L29)
+
+```javascript
+function chooseOpenCarList(data: { keyword: string }) {
+  return ins.execute<{id:string,title:string}[]>({
+    path: '/path/to/api.json',
+    method: 'POST',
+    data,
+  });
+}
+
+```
+
+3. 调用
+
+```javascript
+chooseOpenCarList({ keyword: "xxxx" }).then((data) => {
+  console.log(data.id, data.title);
+});
+```
+
+4. 自定义拦截器<a id='interceptor'></a>
+``` javascript
+/**
+ * 为每一个请求增加version header
+ */
+async function appVersionInterceptor(request: HttpRequestConfig, next: ChainedInterceptor<HttpResponse<any>>) {
+  request.headers = request.headers || {};
+    request.headers['version'] = getAppVersion();
+  const response = await next(request);
+  //在这里可以处理响应
+  return response;
+}
+```
+
+5. 自定义requestCore
+
+```javascript
+/**
+ * 实现 doRequest 方法发送请求即可 
+ */
+class CustomerRequestCoreImpl implements RequestCore {
+  doRequest(request: HttpRequestConfig): Promise<HttpResponse<any>> {
+    return XXXX.request({
+      url:request.url,
+      data:request.data||request.params,
+      headers:request.headers,
+      method:request.method,
+      ...
+    })
+  }.then(res=>{
+     return {
+      headers: res.headers,
+      statusCode: res.status,
+      errMsg: res.statusText,
+      data: res.data,
+    };
+  })
+}
+
+```
+
+## 使用注解收集请求
+
+所有参数全部都会收集到 HttpRequestConfig 中，可以在[拦截器](#user-content-interceptor)中对 HttpRequestConfig 进行处理，通过[requestCore发出请求](#user-content-requestConfig)。
+
 
 一共提供三类注解：类注解，方法注解，方法参数注解
 
@@ -22,15 +99,15 @@ class Api {}
 
 ### 方法注解
 
-| 注解                 | 说明                     | 访问方式                                     |
-| -------------------- | ------------------------ | -------------------------------------------- |
-| POST(path)           | 定义请求方式以及请求路径 | requestConfig.method,<br/>requestConfig.path |
-| GET(path)            | 同上                     | 同上                                         |
-| PUT(path)            | 同上                     | 同上                                         |
-| DELETE(path)         | 同上                     | 同上                                         |
-| HEAD(path)           | 同上                     | 同上                                         |
-| METHOD(method,path) | 同上                     | 同上                                         |
-| Header([key1,value1,key2,value2,...])  | 添加请求头               | requestConfig.headers                     |
+| 注解                                  | 说明                     | 访问方式                                     |
+| ------------------------------------- | ------------------------ | -------------------------------------------- |
+| POST(path)                            | 定义请求方式以及请求路径 | requestConfig.method,<br/>requestConfig.path |
+| GET(path)                             | 同上                     | 同上                                         |
+| PUT(path)                             | 同上                     | 同上                                         |
+| DELETE(path)                          | 同上                     | 同上                                         |
+| HEAD(path)                            | 同上                     | 同上                                         |
+| METHOD(method,path)                   | 同上                     | 同上                                         |
+| Header([key1,value1,key2,value2,...]) | 添加请求头               | requestConfig.headers                        |
 
 eg:
 
@@ -135,9 +212,10 @@ export const NO_AUTH = new NoAuthDecor().regist();
 | 方法 | NetHubMethodDecorator | collectMethod , collectMethodWithValue | NetHubInterpreter|
 | 方法参数 | NetHubFieldDecorator | collectField , collectFieldWithValue | NetHubInterpreter|
 
-注⚠️：类注解 需要 传递参数时，需要通过 registWithValue 方法 注册注解 ，与其他两种注解的注册方式不同
+注 ⚠️：类注解 需要 传递参数时，需要通过 registWithValue 方法 注册注解 ，与其他两种注解的注册方式不同
 
 NetHubInterpreter 签名：
+
 ```typescript
 /**
  * currentRequestConfig : 本次方法调用时注解收集到的参数对象集合，包含类，方法，参数注解
@@ -151,6 +229,7 @@ NetHubInterpreter 签名：
 ```
 
 需要重写的方法的签名：
+
 ```typescript
 
     collectClass(cls: object): NetHubInterpreter;
