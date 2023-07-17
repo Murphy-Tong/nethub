@@ -1,6 +1,6 @@
 ## 简单使用
 
-1. 创建 client
+1. 创建 client <a id='client'></a>
 
 ```javascript
 
@@ -76,7 +76,7 @@ class CustomerRequestCoreImpl implements RequestCore {
 
 ## 使用注解收集请求
 
-所有参数全部都会收集到 HttpRequestConfig 中，可以在[拦截器](#user-content-interceptor)中对 HttpRequestConfig 进行处理，通过[requestCore发出请求](#user-content-requestConfig)。
+所有参数全部都会收集到 HttpRequestConfig 中，可以在[拦截器](#user-content-interceptor)中对 HttpRequestConfig 进行处理，通过[client](#user-content-client)发出请求。
 
 
 一共提供三类注解：类注解，方法注解，方法参数注解
