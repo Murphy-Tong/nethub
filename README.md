@@ -73,8 +73,44 @@ class CustomerRequestCoreImpl implements RequestCore {
 }
 
 ```
+--- 
 
-## 使用注解收集请求
+## 使用注解
+1. 定义请求
+``` typescript
+@Service("http://www.baidu.com")
+class Api {
+  @POST("/api/xxx")
+  getName(@QueryMap data: { key: string }): Promise<string> {
+    throw new Error();
+  }
+  @METHOD({ path: "/api/xxx", method: "GET" })
+  getName2(@QueryMap data: { key: string }): Promise<string> {
+    throw new Error();
+  }
+}
+```
+
+2. 创建请求实例
+```typescript
+const client = createInstance({
+    requestCore: new DefaultAxiosRequestCoreImpl(),// 使用axios发送请求
+    interceptors:[appVersionInterceptor],//配置请求拦截器，可以对请求数据、响应数据进行处理
+  });
+
+const api = new NetHub()
+  .setClient(client)
+  .create(Api);
+```
+
+3. 发起请求
+```typescript
+api.getName({key:"1"}).then(console.log)
+```
+
+--- 
+
+### 注解进阶
 
 所有参数全部都会收集到 HttpRequestConfig 中，可以在[拦截器](#user-content-interceptor)中对 HttpRequestConfig 进行处理，通过[client](#user-content-client)发出请求。
 
