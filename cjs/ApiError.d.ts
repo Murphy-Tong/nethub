@@ -4,8 +4,8 @@ export declare class ApiError extends Error {
     static ERR_CODES: {
         INVALIDATE_CODE: number;
     };
-    code: number;
+    code: number | string;
     message: string;
     response: HttpResponse<any> | undefined;
-    constructor(msg: string, code?: number, response?: HttpResponse<any>);
+    constructor(msg: string, code?: number | string, response?: HttpResponse<any>);
 }

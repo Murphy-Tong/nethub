@@ -7,14 +7,14 @@ export class ApiError extends Error {
     INVALIDATE_CODE: -1,
   };
 
-  code = 200;
+  code:number|string = 200;
   message = "";
   response: HttpResponse<any> | undefined;
 
-  constructor(msg: string, code?: number, response?: HttpResponse<any>) {
+  constructor(msg: string, code?: number|string, response?: HttpResponse<any>) {
     super(msg);
-    if (code) {
-      this.code = Number(code);
+    if (code!==undefined&&code!==null) {
+      this.code =code;
     } else {
       this.code = ApiError.ERR_CODES.INVALIDATE_CODE;
     }

@@ -6,8 +6,8 @@ class ApiError extends Error {
         super(msg);
         this.code = 200;
         this.message = "";
-        if (code) {
-            this.code = Number(code);
+        if (code !== undefined && code !== null) {
+            this.code = code;
         }
         else {
             this.code = ApiError.ERR_CODES.INVALIDATE_CODE;
