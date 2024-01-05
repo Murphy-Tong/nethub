@@ -34,6 +34,7 @@ __exportStar(require("./define/decorator"), exports);
 __exportStar(require("./define/field"), exports);
 __exportStar(require("./define/method"), exports);
 __exportStar(require("./field"), exports);
+__exportStar(require("./body"), exports);
 __exportStar(require("./header"), exports);
 __exportStar(require("./method"), exports);
 __exportStar(require("./query"), exports);
