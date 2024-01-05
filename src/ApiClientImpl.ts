@@ -28,7 +28,7 @@ export interface HttpResponse<T> {
 
 export interface HttpRequestConfig {
   params?: IRequestQuery; // url query
-  data?: IRequestBody; // body array
+  data?: IRequestBody; // body
   method?: "GET" | "POST" | "DELETE" | "PUT" | "HEAD" | string;
   headers?: IRequestHeader; // default get
   /**

@@ -167,8 +167,9 @@ class Api {
 | ----------- | ------------------------------------------------------- | ---------------------- |
 | Query(key)  | 定义一个 http query 参数，key 要 通过参数传入           | requestConfig.params   |
 | QueryMap    | 同上，定义多个 query 参数，                             | 同上                   |
-| Field(key)  | 定义一个 http post body 对象的参数，key 要 通过参数传入 | 同上                   |
+| Field(key)  | 定义一个 http post body 对象的参数，key 要 通过参数传入 | 同上  equestConfig.data                 |
 | FieldMap    | 同上，定义多个 post body 参数                           | 同上                   |
+| Body        | 同上，直接设置 post body 参数 ，body 为非JSON对象时比较有用，如文件，字符串，数组                          |    同上                 |
 | Header(key) | 同上，定义请求 header 参数                              | requestConfig。headers |
 
 可以同时使用多种注解，key 相同时，后面参数的优先级会更高

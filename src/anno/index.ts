@@ -24,6 +24,7 @@ export * from "./define/decorator";
 export * from "./define/field";
 export * from "./define/method";
 export * from "./field";
+export * from "./body";
 export * from "./header";
 export * from "./method";
 export * from "./query";
