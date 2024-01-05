@@ -15,7 +15,7 @@ const client = createInstance({
 2. 使用 client 发送请求。支持的[参数(HttpRequestConfig)](https://github.com/Murphy-Tong/nethub/blob/master/src/ApiClientImpl.ts#L29)
 
 ```javascript
-function chooseOpenCarList(data: { keyword: string }) {
+function getConfig(data: { keyword: string }) {
   return ins.execute<{id:string,title:string}[]>({
     path: '/path/to/api.json',
     method: 'POST',
@@ -28,12 +28,13 @@ function chooseOpenCarList(data: { keyword: string }) {
 3. 调用
 
 ```javascript
-chooseOpenCarList({ keyword: "xxxx" }).then((data) => {
+getConfig({ keyword: "xxxx" }).then((data) => {
   console.log(data.id, data.title);
 });
 ```
 
 4. 自定义拦截器<a id='interceptor'></a>
+
 ``` javascript
 /**
  * 为每一个请求增加version header
@@ -173,7 +174,7 @@ class Api {
 | Header(key) | 同上，定义请求 header 参数                              | requestConfig。headers |
 
 可以同时使用多种注解，key 相同时，后面参数的优先级会更高
-
+同上 
 eg: 下面两种效果是一样的
 
 ```typescript
