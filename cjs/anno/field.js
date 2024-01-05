@@ -32,7 +32,7 @@ class FieldMapMapDecorator extends field_1.NetHubFieldDecorator {
         return function (currentRequestConfig, argumentValue) {
             var _a;
             currentRequestConfig.data = (_a = currentRequestConfig.data) !== null && _a !== void 0 ? _a : {};
-            if (typeof currentRequestConfig.data !== "object") {
+            if (typeof currentRequestConfig.data !== "object" || Array.isArray(currentRequestConfig.data)) {
                 throw new Error("NetHub: @FieldMap 当前body已经不是简单对象，无法添加更多参数");
             }
             currentRequestConfig.data = Object.assign(currentRequestConfig.data, argumentValue || {});

@@ -34,7 +34,7 @@ export class FieldMapMapDecorator extends NetHubFieldDecorator<string> {
       argumentValue: any
     ) {
       currentRequestConfig.data = currentRequestConfig.data ?? {};
-      if (typeof currentRequestConfig.data !== "object") {
+      if (typeof currentRequestConfig.data !== "object" || Array.isArray(currentRequestConfig.data)) {
         throw new Error(
           "NetHub: @FieldMap 当前body已经不是简单对象，无法添加更多参数"
         );
