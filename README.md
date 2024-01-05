@@ -41,7 +41,7 @@ getConfig({ keyword: "xxxx" }).then((data) => {
  */
 async function appVersionInterceptor(request: HttpRequestConfig, next: ChainedInterceptor<HttpResponse<any>>) {
   request.headers = request.headers || {};
-    request.headers['version'] = getAppVersion();
+  request.headers['version'] = getAppVersion();
   const response = await next(request);
   //在这里可以处理响应
   return response;
@@ -78,6 +78,7 @@ class CustomerRequestCoreImpl implements RequestCore {
 
 ## 使用注解
 1. 定义请求
+
 ``` typescript
 @Service("http://www.baidu.com")
 class Api {
@@ -93,6 +94,7 @@ class Api {
 ```
 
 2. 创建请求实例
+
 ```typescript
 const client = createInstance({
     requestCore: new DefaultAxiosRequestCoreImpl(),// 使用axios发送请求
@@ -105,6 +107,7 @@ const api = new NetHub()
 ```
 
 3. 发起请求
+
 ```typescript
 api.getName({key:"1"}).then(console.log)
 ```
@@ -244,6 +247,7 @@ export const NO_AUTH = new NoAuthDecor().regist();
 ```
 
 扩展对应表
+
 | 注解位置 | 扩展基类 | 重写方法 | 返回值 |
 | - | - | - | - |
 | 类 | NetHubClassDecorator | collectClass , collectClassWithValue | NetHubInterpreter|
@@ -272,18 +276,18 @@ NetHubInterpreter 签名：
 
     collectClass(cls: object): NetHubInterpreter;
     /**
-     * value : 注解使用是传过来的参数值
+     * value : 注解使用时传过来的参数值
      */
-    collectClassWithValue(value: V, cls: object): NetHubInterpreter;
+    collectClassWithValue(value: string, cls: object): NetHubInterpreter;
     collectMethod(target: Object, methodName: string): NetHubInterpreter;
     /**
-     * value : 注解使用是传过来的参数值
+     * value : 注解使用时传过来的参数值
      */
-    collectMethodWithValue(value: V, target: Object, methodName: string): NetHubInterpreter;
+    collectMethodWithValue(value: string, target: Object, methodName: string): NetHubInterpreter;
     collectField(target: Object, methodName: string, parameterIndex: number): NetHubInterpreter;
     /**
-     * value : 注解使用是传过来的参数值
+     * value : 注解使用时传过来的参数值
      */
-    collectFieldWithValue(value: V, target: Object, methodName: string, parameterIndex: number): NetHubInterpreter;
+    collectFieldWithValue(value: string, target: Object, methodName: string, parameterIndex: number): NetHubInterpreter;
 
 ```
