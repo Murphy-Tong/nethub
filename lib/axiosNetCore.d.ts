@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { HttpRequestConfig, HttpResponse, RequestCore } from "./ApiClientImpl";
-export declare class DefaultAxiosRequestCoreImpl implements RequestCore {
+export default class DefaultAxiosRequestCoreImpl implements RequestCore {
     onError(e: AxiosError): Promise<HttpResponse<any>>;
     onResponse(res: AxiosResponse<any, any>): HttpResponse<any>;
     /**
