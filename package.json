@@ -4,9 +4,16 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "exports": {
-    "require": "./cjs/index.js",
-    "import": "./lib/index.js",
-    "default": "./lib/index.js"
+    ".": {
+      "require": "./cjs/index.js",
+      "import": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./lib/axiosNetCore": {
+      "require": "./cjs/axiosNetCore.js",
+      "import": "./lib/axiosNetCore.js",
+      "default": "./lib/axiosNetCore.js"
+    }
   },
   "directories": {
     "lib": "lib"
