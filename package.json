@@ -9,10 +9,10 @@
       "import": "./lib/index.js",
       "default": "./lib/index.js"
     },
-    "./DefaultAxiosRequestCoreImpl": {
-      "require": "./cjs/axiosNetCore.js",
-      "import": "./lib/axiosNetCore.js",
-      "default": "./lib/axiosNetCore.js"
+    "./lib/DefaultAxiosRequestCoreImpl": {
+      "require": "./cjs/DefaultAxiosRequestCoreImpl.js",
+      "import": "./lib/DefaultAxiosRequestCoreImpl.js",
+      "default": "./lib/DefaultAxiosRequestCoreImpl.js"
     }
   },
   "directories": {
