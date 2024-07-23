@@ -1,1 +1,2 @@
-export * from './axiosNetCore';
+import axiosNetCore from './axiosNetCore';
+export default axiosNetCore;
