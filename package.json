@@ -9,7 +9,7 @@
       "import": "./lib/index.js",
       "default": "./lib/index.js"
     },
-    "./lib/axiosNetCore": {
+    "./axiosNetCore": {
       "require": "./cjs/axiosNetCore.js",
       "import": "./lib/axiosNetCore.js",
       "default": "./lib/axiosNetCore.js"
